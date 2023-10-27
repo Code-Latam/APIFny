@@ -1,0 +1,31 @@
+.App {
+    /* Use flex display */
+    display: flex;
+    /* Set the flex direction to column */
+    flex-direction: column;
+    /* Set the height of the container to 100% of the viewport */
+    height: 100vh;
+  }
+  
+  .top-part {
+    /* Set the flex-basis of the top part to 30% */
+    height:300px;
+    display: flex;
+    align-items:normal; 
+    border: 1px solid #03A062;
+    
+  }
+  
+
+  .graph
+  {
+    padding: 5px;
+  }
+
+  .graph-header
+  {
+    font-size: large;
+    cursor: pointer;
+    margin:10px;
+    color:blue
+  }

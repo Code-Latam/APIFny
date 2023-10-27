@@ -1,0 +1,56 @@
+.tree-node {
+    color: #03A062;
+  }
+  
+  /* Apply indentation for child nodes */
+  .child-node {
+    margin-left: 40px;
+    color: #03A062;
+  }
+  
+  .workflow {
+    color: #03A062;
+    margin-left: 30px;
+  }
+
+  /* Set up a main container to hold the left and right panels */
+  .main-container {
+    height: 100vh; /* Use the full viewport height */
+    width: 100%;
+    display: flex;
+  }
+  
+  .right-container {
+    flex: 7; /* Set the flex property to 7 for 70% width */
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+  
+  /* Style the left panel */
+  .left-container {
+    width: 30%;
+    height: 100%;
+    min-width: 350px;
+  }
+  
+
+  
+
+/* Style the right panel (explorer-view) */
+.graph-view {
+ height:40%;
+ width: 100%;
+ flex: 3; /* Don't flex, maintain the specified height */
+}
+
+/* Style the lower panel separately */
+.lower-panel {
+  border: 1px solid #03A062;
+  flex: 7; /* Don't flex, maintain the specified height */
+  
+}
+
+
+
+

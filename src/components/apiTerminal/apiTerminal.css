@@ -1,0 +1,148 @@
+/* YourCSSFile.css */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+#terminal-prompt {
+  position: absolute;
+  top: 15px;
+  left: 100px;
+  width: 14px; /* Adjust the width of the square as desired */
+  height: 14px; /* Adjust the height of the square as desired */
+  background-color: rgb(61, 123, 61); /* Set the background color of the square */
+  animation: blink 1s infinite; /* Add the animation */
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0; /* Hide the square at 50% of the animation */
+  }
+}
+
+body {
+  background-color: #040304;
+  margin: 0;
+}
+
+h1 {
+  color: #333;
+}
+
+.container {
+  width: 100%;
+  margin: 0 auto;
+}
+
+.page {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: left; /* align the panels to the left */
+  gap: 0px; /* add some gap between the panels */
+}
+
+.panel {
+  border: 1px solid #83E7B2; /* make the borders thicker and matrix green */
+  padding: 10px;
+  width: calc(100% - 0px); /* subtract the gap size from the width */
+  height: 100%;
+}
+
+.curl-panel {
+  border-color: #03A062;
+  overflow-y: scroll; /* make panel C scrollable */
+  font-family: monospace;
+  background-color: #040304; /* use a dark theme for panel C */
+  color: #03A062; /* use matrix green for panel C */
+  width: 100%; /* occupy 100% of the width */
+  height: 45vh;
+  position: relative; /* Add position relative to the panel-c */
+  overflow: hidden; /* Ensure the lines stay within the panel */
+  overflow-y: scroll;
+}
+
+.mycurlinput {
+  background-color: #040304;
+  color: #03A062;
+  height: 18px;
+  width: 100px;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  border-bottom: 1px solid green;
+  animation: blink2 2s infinite;
+}
+
+@keyframes blink2 {
+  50% {
+    border-color: transparent;
+  }
+}
+
+.panel-c h2 {
+  margin-top: 0;
+  font-weight: normal;
+}
+
+.panel-d {
+  border-color: #03A062;
+  font-family: monospace;
+  background-color: #040304; /* use a dark theme for panel D */
+  background-image: radial-gradient(#226248, black 100%);
+  color: #03A062; /* use matrix green for panel D */
+  width: 100%;
+  height: 38vh;
+  overflow-y: scroll;
+  position: relative;
+}
+
+.panel-d h2 {
+  margin-top: 0;
+  font-weight: normal;
+}
+
+input[type=submit] {
+  background-color: #333;
+  color: white;
+  cursor: pointer;
+  width: 150px;
+}
+
+input[type=submit]:hover {
+  background-color: #555;
+}
+
+.panel-c form {
+  display: flex;
+  flex-direction: column;
+}
+
+.submit-button {
+  display: flex;
+  justify-content: flex-end; /* align the button to the right */
+}
+
+.input-fields {
+  display: flex;
+  flex-direction: column;
+}
+
+@keyframes typing {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+.typing-effect {
+  animation: typing 2s steps(40) 1s normal both;
+  white-space: nowrap;
+  overflow: hidden;
+  width: 0;
+  display: inline-block;
+  vertical-align: bottom;
+}

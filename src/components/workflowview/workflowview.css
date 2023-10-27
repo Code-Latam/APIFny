@@ -1,0 +1,32 @@
+.Workflowview {
+    background-color: black;
+    padding: 20px;
+    color: #03A062;
+   
+  }
+
+  .Workflowviewtop {
+    font-size: 50;
+    display: flex;
+    justify-content: space-between; /* Align items on the same row */
+    align-items: center; /* Vertically center items */
+  }
+  
+
+  
+  .WorkflowViewinputname
+  {
+    margin-bottom: 10px;
+    margin-top: 10px;
+    background-color: #ccc;
+    width:800px;
+   
+  }
+
+  .WorkflowViewinput
+  {
+    margin-bottom: 10px;
+    margin-top: 10px;
+    background-color: #ccc;
+  }
+  
