@@ -266,8 +266,8 @@ export function convertToOpenAPI(apiObjects, workflowName) {
   const openAPIObject = {
     openapi: '3.0.0', // Specify the OpenAPI version
     info: {
-      title: apiObjects[0].name || 'Default Title',
-      description: apiObjects[0].description || 'Default Description',
+      title: apiObjects[0].name,
+      description: apiObjects[0].description,
       version: '1.0.0',
     },
     paths: {},
@@ -275,15 +275,15 @@ export function convertToOpenAPI(apiObjects, workflowName) {
 
   apiObjects.forEach(apiDefinition => {
     const apiObject = {
-      _id: apiDefinition._id || 'Default ID', // Set your default value here
-      clientNr: apiDefinition.clientNr || 'Default Client Number', // Set your default value here
-      name: apiDefinition.name || 'Default Name', // Set your default value here
-      method: apiDefinition.method || 'GET', // Set your default value here, e.g., 'GET'
-      description: apiDefinition.description || 'Default Description', // Set your default value here
-      requestBodyType: apiDefinition.requestBodyType || 'JSON', // Set your default value here, e.g., 'JSON'
-      responseBodyType: apiDefinition.responseBodyType || 'application/json', // Set your default value here
-      parametersDescription: apiDefinition.parametersDescription || {}, // Set your default value here as an empty object
-      urlRoute: apiDefinition.urlRoute || '/default-route', // Set your default value here, e.g., '/default-route'
+      _id: apiDefinition._id, // You can generate a unique ID
+      clientNr: apiDefinition.clientNr,
+      name: apiDefinition.name,
+      method: apiDefinition.method,
+      description: apiDefinition.description,
+      requestBodyType: apiDefinition.requestBodyType,
+      responseBodyType: apiDefinition.responseBodyType,
+      parametersDescription: apiDefinition.parametersDescription,
+      urlRoute: apiDefinition.urlRoute,
     };
 
     // Define the request content type based on requestBodyType
@@ -300,6 +300,7 @@ export function convertToOpenAPI(apiObjects, workflowName) {
               type: 'object',
               properties: {},
             },
+            example: {},
           },
         },
       },
@@ -322,11 +323,11 @@ export function convertToOpenAPI(apiObjects, workflowName) {
     for (const key in apiDefinition.requestBody) {
       if (apiDefinition.requestBody.hasOwnProperty(key)) {
         const type = apiObject.parametersDescription[key] || 'string'; // Default to 'string' if the type is not defined
-        const defaultValue = apiDefinition.requestBody[key];
+        const example = apiDefinition.requestBody[key];
         openAPIObject.paths[apiObject.urlRoute][apiObject.method.toLowerCase()].requestBody.content[contentType].schema.properties[key] = {
           type,
-          default: defaultValue, // Use the OpenAPI 'default' keyword to specify default values
         };
+        openAPIObject.paths[apiObject.urlRoute][apiObject.method.toLowerCase()].requestBody.content[contentType].example[key] = example;
       }
     }
 
@@ -341,7 +342,6 @@ export function convertToOpenAPI(apiObjects, workflowName) {
           required: true, // You can modify this based on your requirements
           schema: {
             type: 'string', // Assuming your headers contain string values
-            default: value, // Use the OpenAPI 'default' keyword to specify default header values
           },
         });
       });
@@ -350,5 +350,4 @@ export function convertToOpenAPI(apiObjects, workflowName) {
 
   return openAPIObject;
 }
-
 

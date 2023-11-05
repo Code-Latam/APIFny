@@ -20,6 +20,8 @@ import {
   } from "@material-ui/icons";
 
 const ContextMenu = ({ selectedItemType, onSelectMenuItem, position }) => {
+    console.log("Selected Item Type is:");
+    console.log(selectedItemType);
   const handleMenuItemClick = (item) => {
     console.log("clicked");
     onSelectMenuItem(item);
@@ -31,36 +33,45 @@ const ContextMenu = ({ selectedItemType, onSelectMenuItem, position }) => {
       className="context-menu"
       style={{ top: position.y, left: position.x }}
     >
-      {selectedItemType === 'workflow' || selectedItemType === 'api' ? (
+      {selectedItemType === 'workflow' || selectedItemType === 'api' || selectedItemType === 'apicode' || selectedItemType === 'workflowcode'  ? (
         <>
-          <div className="menu-item" onClick={() => handleMenuItemClick('Description')}>
-            <Description className="menu-icon" />
-            <span className="menu-text">Description</span>
+          {(selectedItemType === 'api' || selectedItemType === 'apicode' || selectedItemType === 'workflowcode')  && (
+          <>
+          <div className="menu-item" onClick={() => handleMenuItemClick('cURL')}>
+          <Code className="menu-icon" />
+            <span className="menu-text">cURL</span>
           </div>
+          </>
+          )}
           <div className="menu-separator"></div>
-          <div className="menu-item" onClick={() => handleMenuItemClick('Javascript Code')}>
+          <div className="menu-item" onClick={() => handleMenuItemClick('javascript')}>
           <Code className="menu-icon" />
             <span className="menu-text">Javascript Code</span>
           </div>
-          <div className="menu-item" onClick={() => handleMenuItemClick('Python Code')}>
+          <div className="menu-item" onClick={() => handleMenuItemClick('python')}>
           <Code className="menu-icon" />
             <span className="menu-text">Python Code</span>
           </div>
           <div className="menu-separator"></div>
-          <div className="menu-item" onClick={() => handleMenuItemClick('Export to Swagger/Postman')}>
+          <div className="menu-item" onClick={() => handleMenuItemClick('export-openapi')}>
           <Folder className="menu-icon" />
-            <span className="menu-text">Export to Swagger/Postman'</span>
+            <span className="menu-text">Export Open API 3.0.0'</span>
           </div>
-          {selectedItemType === 'api' && (
-            
-            <div className="menu-item" onClick={() => handleMenuItemClick('Export to Chatbot/Wiki')}>
+          
+    </>
+      ) : null}
+      {(selectedItemType === 'workflow'   || selectedItemType === 'product')  && (
+          <>
+          <div className="menu-item" onClick={() => handleMenuItemClick('Export to Chatbot/Wiki')}>
           <Folder className="menu-icon" />
             <span className="menu-text">Export to Chatbot/Wiki'</span>
           </div>
-
+          <div className="menu-item" onClick={() => handleMenuItemClick('description')}>
+          <Description className="menu-icon" /> 
+            <span className="menu-text">Description</span>
+          </div>
+          </>
           )}
-        </>
-      ) : null}
           <div className="menu-separator"></div>
           <div className="menu-item" onClick={() => handleMenuItemClick('Close')}>
           <Close className="menu-icon" />

@@ -2,11 +2,16 @@ import React, { useState, useEffect } from 'react';
 import "./producttree.css" ;
 import axios from "axios";
 import ApiTerminal from "../../components/apiTerminal/ApiTerminal";
+import ApiCode from "../../components/apicode/ApiCode";
+import WorkflowCode from "../../components/workflowcode/WorkflowCode";
 import Graphview from "../../components/graphview/Graphview";
 import Productview from "../productview/Productview";
 import Workflowview from '../workflowview/Workflowview';
 import ContextMenu from "../contextmenu/ContextMenu"; 
 import { FiMoreVertical } from 'react-icons/fi'
+import {convertToOpenAPI} from "../../utils/utils.js";
+import jsYaml from 'js-yaml';
+import { saveAs } from 'file-saver';
 
 const clientNr = process.env.REACT_APP_CLIENTNR;
 const explorerId = process.env.REACT_APP_EXPLORERID;
@@ -37,9 +42,68 @@ const ProductTree = () => {
   const [selectedWork, setSelectedWorkflow] = useState(null);
   const [selectedTaskId, setSelectedTaskId] = useState(null);
   const [selectedApi, setSelectedApi] = useState(null);
+  const [selectedCodeType, setCodeType] = useState(null);
   const [products, setProducts] = useState([]);
+  const [selectedMenu,setMenu ] = useState(null);
   const [contextMenuVisible, setContextMenuVisible] = useState(false); 
   const [contextMenuPosition, setContextMenuPosition] = useState({ x: 0, y: 0 }); 
+
+  async function exportApiOpenApi(ExportApiName)
+  {
+    try {
+      const myApibody = 
+      {
+        clientNr: clientNr,
+        name: ExportApiName
+      }
+      const response = await axios.post(process.env.REACT_APP_CENTRAL_BACK + "/api/query", myApibody);
+      const myApi = await response.data;
+      const myApiList = [];
+      myApiList.push(myApi);
+
+      // create the openApi Object
+      const openAPIObject = convertToOpenAPI(myApiList);
+      const yamlContent = jsYaml.dump(openAPIObject, { skipInvalid: true });
+      // Create a Blob from the YAML content
+      const blob = new Blob([yamlContent], { type: 'text/yaml' });
+      // Use the saveAs function from the file-saver library to trigger the download
+      saveAs(blob, 'api.yaml');
+    } catch (error) {
+      // Handle any errors
+      console.error(error);
+    }
+  }
+
+
+  const handleSelectMenuItem = (menuItem) => {
+    switch (menuItem) {
+      case 'javascript':
+      case 'python':
+        setMenu('code');
+        if (selectedItemType === 'api') {
+          setSelectedItemType("apicode");
+        } else if (selectedItemType === 'workflow') {
+          setSelectedItemType("workflowcode");
+        }
+        setCodeType(menuItem);
+        break;
+      case 'export-openapi':
+        setMenu('export-openapi');
+        if (selectedItemType === 'api'|| selectedItemType === 'apicode') {
+          exportApiOpenApi(selectedApi);
+        } else if (selectedItemType === 'workflow' || selectedItemType === 'workflowcode' ) {
+          exportApiOpenApi(selectedApi);
+        }
+        break;
+      default:
+        if (menuItem !== 'close') {
+          setMenu(menuItem);
+        }
+        break;
+    }
+    hideContextMenu();
+  };
+  
 
 
   const handleSelectedItemChange = (newValue,newApiName, newTaskId) => {
@@ -152,10 +216,7 @@ const ProductTree = () => {
           {contextMenuVisible && (
             <ContextMenu
               selectedItemType={selectedItemType}
-              onSelectMenuItem={(menuItem) => {
-                // Handle menu item selection here
-                hideContextMenu();
-              }}
+              onSelectMenuItem={handleSelectMenuItem}
               position={contextMenuPosition}
             />
           )}
@@ -177,7 +238,7 @@ const ProductTree = () => {
        /> 
          : null} 
 
-        {selectedItemType === 'api' ?
+        {selectedItemType === 'api' || selectedMenu === 'cURL' ?
          <ApiTerminal
          clientNr = {clientNr}
          explorerId = {explorerId}
@@ -185,6 +246,27 @@ const ProductTree = () => {
          workflowName = {selectedWork}
          apiName = {selectedApi}
          taskId = {selectedTaskId}
+       /> 
+         : null} 
+
+        {(selectedItemType ==='apicode' && selectedMenu === 'code') ?
+         <ApiCode
+         clientNr = {clientNr}
+         explorerId = {explorerId}
+         productName = {selectedProduct}
+         workflowName = {selectedWork}
+         apiName = {selectedApi}
+         taskId = {selectedTaskId}
+         codeType = {selectedCodeType}
+       /> 
+         : null} 
+        {(selectedItemType === 'workflowcode' && selectedMenu ==='code') ?
+         <WorkflowCode
+         clientNr = {clientNr}
+         explorerId = {explorerId}
+         productName = {selectedProduct}
+         workflowName = {selectedWork}
+         codeType = {selectedCodeType}
        /> 
          : null} 
         </div>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react"
-import './apicode.css'; // Import your CSS file here
+import './workflowcode.css'; // Import your CSS file here
 import {generateJavaScriptCode,generatePythonCode, getDecodedBody} from "../../utils/utils.js";
 import axios from "axios";
 import SyntaxHighlighter from "react-syntax-highlighter";
@@ -11,17 +11,15 @@ import { FaCopy } from "react-icons/fa";
 import { ToastContainer, toast } from 'react-toastify'; // import toastify components
 import 'react-toastify/dist/ReactToastify.css'; // import toastify CSS
 
-const ApiCode = ({ clientNr, explorerId, productName, workflowName, taskId,apiName, codeType}) => {
+const WorkflowCode = ({ clientNr, explorerId, productName, workflowName, codeType}) => {
   
   
   const [explorer, setExplorer] = useState([]);
   const [requestBodyFields, setRequestBodyFields] = useState({});
-  const [api, setApi] = useState({});
   const [generatedCode, setGeneratedCode] = useState('');
-  const [copied, setCopied] = useState(false);
+  const [ApiList, setApiList] = useState([]);
 
   const handleCopy = () => {
-    setCopied(true);
     toast.success('Code copied!', {autoClose: 1000});
   };
 
@@ -45,16 +43,16 @@ const ApiCode = ({ clientNr, explorerId, productName, workflowName, taskId,apiNa
       const myApibody = 
       {
         clientNr: clientNr,
-        name: apiName
+        explorerId: explorerId,
+        workflowName:workflowName
       }
-      const response = await axios.post(process.env.REACT_APP_CENTRAL_BACK + "/api/query", myApibody);
-      const myApi = await response.data;
+      const response = await axios.post(process.env.REACT_APP_CENTRAL_BACK + "/link/queryorderedapi", myApibody);
+      const myApiList = await response.data;
       console.log("API OBJECT first render");
-      console.log(myApi);
 
-      generateCode(myApi)
+      generateCode(myApiList)
 
-      setApi(myApi);
+      setApiList(myApiList);
 
       const myExplorerbody = 
       {
@@ -65,10 +63,6 @@ const ApiCode = ({ clientNr, explorerId, productName, workflowName, taskId,apiNa
       const myExplorer = Eresponse.data;
       setExplorer(myExplorer);
 
-      if (myApi.requestBody) {
-        const initialRequestBodyFields = { ...myApi.requestBody };
-        setRequestBodyFields(initialRequestBodyFields);
-      }
 
 
     } catch (error) {
@@ -77,26 +71,32 @@ const ApiCode = ({ clientNr, explorerId, productName, workflowName, taskId,apiNa
     }
   };
 
-  const generateCode = (api) => {
-    let combinedPythonCode = '# Python Code';
-    let combinedJavaScriptCode = '// Javascript Code';
+  const generateCode = (apis) => {
+    let combinedPythonCode = `# Python code for: 
+# Workflow Name: ${workflowName}
+`;
+    let combinedJavaScriptCode = `// JavaScript code for: 
+// Workflow Name: ${workflowName}
+`;
   
-      if (codeType === "python") {
-        const pythonCode = generatePythonCode(api, explorer, requestBodyFields);
-        combinedPythonCode += pythonCode;
-      } else if (codeType === "javascript") {
-        const javascriptCode = generateJavaScriptCode(api, explorer, requestBodyFields);
-        combinedJavaScriptCode += javascriptCode;
+    for (const api of apis) {
+      if (Object.keys(api).length > 0) {
+        if (codeType === "python") {
+          const pythonCode = generatePythonCode(api, explorer, requestBodyFields);
+          combinedPythonCode += pythonCode;
+        } else if (codeType === "javascript") {
+          const javascriptCode = generateJavaScriptCode(api, explorer, requestBodyFields);
+          combinedJavaScriptCode += javascriptCode;
+        }
       }
+    }
   
     // Determine the combined code based on the selected codeType
     const combinedCode = codeType === "python" ? combinedPythonCode : combinedJavaScriptCode;
   
     // Set the combined code using setGeneratedCode
     setGeneratedCode(combinedCode);
-  };
-
-
+};
 
   
   return (
@@ -113,4 +113,6 @@ const ApiCode = ({ clientNr, explorerId, productName, workflowName, taskId,apiNa
 };
 
 
-export default ApiCode;
+
+
+export default WorkflowCode;
