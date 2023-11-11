@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect,useRef  } from "react"
 import { Graph } from "react-d3-graph"
 import "./graphview.css"
 import axios from "axios";
@@ -36,15 +36,36 @@ const Graphview = ({ selectedProduct, selectedWork,onTaskChange }) => {
     const [selectedTask, setSelectedTask] = useState(null);
   
     const onClickGraph = function(graph) {
-      handleShowModal(graph);
+      setSelectedWorkflow(graph);
+      console.log("graph");
+      console.log(graph);
+      onTaskChange("workflow",selectedProduct, graph.name,null,null);
+      //handleShowModal(graph);
     };
 
-    const onClickNode = function(nodeId, node) {
-      handleShowModaltask(nodeId, node);
+    const graphRef = useRef(null);
+
+    const onClickNode = function(nodeId, node,graphName) {
+      if ( node.apiName && node.apiName !=="")
+      {
+      onTaskChange("taskapi",selectedProduct,graphName,node.apiName,nodeId);
+      }
+      else
+      {
+        onTaskChange("task",selectedProduct, graphName,node.apiName,nodeId);
+      }
+      // handleShowModaltask(nodeId, node);
     };
 
-    const onDoubleClickNode = function(nodeId, node) {
-      onTaskChange("api",node.apiName,nodeId);
+    const onDoubleClickNode = function(nodeId, node,graphName) {
+      if ( node.apiName && node.apiName !=="")
+      {
+      onTaskChange("api",selectedProduct,graphName,node.apiName,nodeId);
+      }
+      else
+      {
+        alert("Task is not an API, double click will not work")
+      }
     };
 
  const onZoomChange = function(previousZoom, newZoom) {
@@ -139,8 +160,8 @@ const Graphview = ({ selectedProduct, selectedWork,onTaskChange }) => {
               }}
               config={config}
               onClickGraph={() => onClickGraph(graph)}
-              onClickNode={onClickNode}
-              onDoubleClickNode={onDoubleClickNode}
+              onClickNode={(nodeId,node) => onClickNode(nodeId,node, graph.name)}
+              onDoubleClickNode={(nodeId,node) => onDoubleClickNode(nodeId,node, graph.name)}
               onZoomChange={onZoomChange}
             />
             </div>

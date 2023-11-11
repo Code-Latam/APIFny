@@ -4,15 +4,21 @@
     /* Set the flex direction to column */
     flex-direction: column;
     /* Set the height of the container to 100% of the viewport */
-    height: 100vh;
+    height: 100%;
+    width: 100%;
+    overflow-x:auto; /* Enable horizontal scrolling */
+    white-space: nowrap; /* Prevent graphs from wrapping to the next line */
   }
   
   .top-part {
     /* Set the flex-basis of the top part to 30% */
     height:300px;
     display: flex;
+    flex-direction:row;
     align-items:normal; 
     border: 1px solid #03A062;
+    overflow-x:auto; /* Enable horizontal scrolling */
+  white-space: nowrap; /* Prevent graphs from wrapping to the next line */
     
   }
   

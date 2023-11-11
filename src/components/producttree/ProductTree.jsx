@@ -7,6 +7,7 @@ import WorkflowCode from "../../components/workflowcode/WorkflowCode";
 import Graphview from "../../components/graphview/Graphview";
 import Productview from "../productview/Productview";
 import Workflowview from '../workflowview/Workflowview';
+import Taskview from '../taskview/Taskview';
 import ContextMenu from "../contextmenu/ContextMenu"; 
 import { FiMoreVertical } from 'react-icons/fi'
 import {convertToOpenAPI} from "../../utils/utils.js";
@@ -62,7 +63,103 @@ const ProductTree = () => {
       myApiList.push(myApi);
 
       // create the openApi Object
-      const openAPIObject = convertToOpenAPI(myApiList);
+      const openAPIObject = convertToOpenAPI(myApiList,myApi.name, myApi.description);
+      const yamlContent = jsYaml.dump(openAPIObject, { skipInvalid: true });
+      // Create a Blob from the YAML content
+      const blob = new Blob([yamlContent], { type: 'text/yaml' });
+      // Use the saveAs function from the file-saver library to trigger the download
+      saveAs(blob, 'api.yaml');
+    } catch (error) {
+      // Handle any errors
+      console.error(error);
+    }
+  }
+
+
+  async function exportWorkflowOpenApi(workflowName)
+  {
+    try {
+      const myWorkflowbody = 
+      {
+        clientNr: clientNr,
+        explorerId: explorerId,
+        workflowName: workflowName
+      }
+      const response = await axios.post(process.env.REACT_APP_CENTRAL_BACK + "/link/queryorderedapi", myWorkflowbody);
+      const myApiList = await response.data;
+
+      if (myApiList === undefined || myApiList.length === 0)
+      {
+        return
+      }
+      // remove empty object from array.
+      const nonEmptyApiList = myApiList.filter(item => Object.keys(item).length > 0);
+
+      const openAPIObject = convertToOpenAPI(nonEmptyApiList, workflowName,"collection of APIS belongin to workflow" );
+      const yamlContent = jsYaml.dump(openAPIObject, { skipInvalid: true });
+      // Create a Blob from the YAML content
+      const blob = new Blob([yamlContent], { type: 'text/yaml' });
+      // Use the saveAs function from the file-saver library to trigger the download
+      saveAs(blob, 'api.yaml');
+    } catch (error) {
+      // Handle any errors
+      console.error(error);
+    }
+  }
+
+  async function exportProductOpenApi(productName)
+  {
+    try {
+      const myWorkflowListRequestBody =
+      {
+        clientNr: clientNr,
+        explorerId: explorerId,
+        productName: productName
+      }
+
+      const workflowListResponse = await axios.post(process.env.REACT_APP_CENTRAL_BACK + "/workflow/queryallgivenproduct", myWorkflowListRequestBody);
+      const myWorkflowList = await workflowListResponse.data;
+      if (myWorkflowList === undefined || myWorkflowList.length === 0)
+      {
+        return
+      }
+
+      var myProductApiList = [];
+
+      for (const myWorkflow of myWorkflowList) 
+      {
+
+            const myWorkflowRequestbody = 
+            {
+              clientNr: clientNr,
+              explorerId: explorerId,
+              workflowName: myWorkflow.name
+            }
+            console.log('before query');
+            console.log(myWorkflowRequestbody);
+
+            try {
+              const response = await axios.post(process.env.REACT_APP_CENTRAL_BACK + "/link/queryorderedapi", myWorkflowRequestbody);
+              var myApiList = await response.data;
+        
+              if (myApiList === undefined || myApiList.length === 0) {
+                myApiList = [];
+              }
+              // add myApiList to myProductApiList
+              myProductApiList = myProductApiList.concat(myApiList);
+            } catch (error) {
+              // Handle the error for this specific API call, e.g., set myApiList to an empty array
+              myApiList = [];
+            }
+
+          }
+            // remove empty object from array.
+
+
+
+      const nonEmptyApiList = myProductApiList.filter(item => Object.keys(item).length > 0)
+
+      const openAPIObject = convertToOpenAPI(nonEmptyApiList, productName,"collection of APIS belongin to product" );
       const yamlContent = jsYaml.dump(openAPIObject, { skipInvalid: true });
       // Create a Blob from the YAML content
       const blob = new Blob([yamlContent], { type: 'text/yaml' });
@@ -87,13 +184,38 @@ const ProductTree = () => {
         }
         setCodeType(menuItem);
         break;
+      case 'cURL':
+          setMenu('cURL');
+          if (selectedItemType === 'api' || selectedItemType === 'apicode' || selectedItemType === 'taskapi' ) {
+            setSelectedItemType("api");
+            break;
+          } 
+      case 'description':
+          setMenu('description');
+          if (selectedItemType === 'api' || selectedItemType === 'apicode' || selectedItemType === 'taskapi' ) {
+            setSelectedItemType("taskapi");
+            break;  
+          } 
+          if (selectedItemType === 'task' ) {
+            setSelectedItemType("task");
+            break;  
+          } 
+          if (selectedItemType === 'workflow' || selectedItemType === 'workflowcode' ) {
+            setSelectedItemType("workflow");
+            break;
+          }
+          break;
       case 'export-openapi':
         setMenu('export-openapi');
-        if (selectedItemType === 'api'|| selectedItemType === 'apicode') {
+        if (selectedItemType === 'api'|| selectedItemType === 'apicode' || selectedItemType === 'taskapi' ) {
           exportApiOpenApi(selectedApi);
-        } else if (selectedItemType === 'workflow' || selectedItemType === 'workflowcode' ) {
-          exportApiOpenApi(selectedApi);
-        }
+          break; } 
+          if (selectedItemType === 'workflow' || selectedItemType === 'workflowcode' ) {
+          exportWorkflowOpenApi(selectedWork);
+          break;}
+          if (selectedItemType === 'product') {
+            exportProductOpenApi(selectedProduct);
+            break;}
         break;
       default:
         if (menuItem !== 'close') {
@@ -106,10 +228,18 @@ const ProductTree = () => {
   
 
 
-  const handleSelectedItemChange = (newValue,newApiName, newTaskId) => {
-    setSelectedItemType(newValue);
+  const handleSelectedItemChange = (newselectItem,newProductName,newWorkflowName,newApiName, newTaskId) => {
+    console.log("We are in product Tree");
+    console.log(newselectItem);
+    console.log(newWorkflowName);
+    console.log(newTaskId);
+    
+    setSelectedItemType(newselectItem);
+    setSelectedProduct(newProductName);
+    
     setSelectedTaskId(newTaskId);
     setSelectedApi(newApiName);
+    setSelectedWorkflow(newWorkflowName);
   };
 
   const handleProductClick = (product) => {
@@ -148,6 +278,9 @@ const ProductTree = () => {
 
       // Set the data state variable with the JSON data
       setProducts(json);
+      // on first fetch set the productname
+      setSelectedProduct(json[0].name)
+      setSelectedItemType('product');
     } catch (error) {
       // Handle any errors
       console.error(error);
@@ -186,7 +319,7 @@ const ProductTree = () => {
   const handleContextMenuClick = (e) => {
     e.preventDefault();
     // Calculate the position of the context menu based on the click event
-    setContextMenuPosition({ x: e.clientX, y: e.clientY });
+    setContextMenuPosition({ x: (e.clientX - 200), y: e.clientY });
     setContextMenuVisible(true);
   };
 
@@ -210,9 +343,10 @@ const ProductTree = () => {
         </div>
         <div className="lower-panel">
 
-        <div className="context-menu-icon" onClick={handleContextMenuClick}>
-        <FiMoreVertical /> {/* Use the kebab icon */}
-          </div>
+        <div className="icon-right-align">
+          <FiMoreVertical className="context-menu-icon" onClick={handleContextMenuClick} />
+        </div>
+
           {contextMenuVisible && (
             <ContextMenu
               selectedItemType={selectedItemType}
@@ -237,8 +371,15 @@ const ProductTree = () => {
          name = {selectedWork}
        /> 
          : null} 
-
-        {selectedItemType === 'api' || selectedMenu === 'cURL' ?
+        {selectedItemType === 'task' || selectedItemType === 'taskapi' ?
+         <Taskview
+         clientNr = {clientNr}
+         explorerId = {explorerId}
+         workflowName = {selectedWork}
+         taskId = {selectedTaskId}
+       /> 
+         : null} 
+        {selectedItemType === 'api'  ?
          <ApiTerminal
          clientNr = {clientNr}
          explorerId = {explorerId}
@@ -249,7 +390,7 @@ const ProductTree = () => {
        /> 
          : null} 
 
-        {(selectedItemType ==='apicode' && selectedMenu === 'code') ?
+        {(selectedItemType ==='apicode' ) ?
          <ApiCode
          clientNr = {clientNr}
          explorerId = {explorerId}
@@ -260,7 +401,7 @@ const ProductTree = () => {
          codeType = {selectedCodeType}
        /> 
          : null} 
-        {(selectedItemType === 'workflowcode' && selectedMenu ==='code') ?
+        {(selectedItemType === 'workflowcode') ?
          <WorkflowCode
          clientNr = {clientNr}
          explorerId = {explorerId}

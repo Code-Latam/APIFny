@@ -12,6 +12,10 @@ const ApiTerminal = ({ clientNr, explorerId, productName, workflowName, taskId,a
   const [explorer, setExplorer] = useState([]);
   const [requestBodyFields, setRequestBodyFields] = useState({});
 
+  console.log("in api terminal");
+  console.log(clientNr);
+  console.log(apiName);
+
   const handleRequestBodyChange = (field, value) => {
     // Update the state with the new value for the specified field
     setRequestBodyFields((prevFields) => ({
@@ -24,7 +28,7 @@ const ApiTerminal = ({ clientNr, explorerId, productName, workflowName, taskId,a
     // Fetch the initial products using an API call
     // Replace this with your actual API endpoint
     fetchApi();
-  }, []);
+  }, [clientNr,explorerId,apiName]);
 
   const fetchApi = async () => {
     
@@ -126,11 +130,13 @@ const ApiTerminal = ({ clientNr, explorerId, productName, workflowName, taskId,a
             <input type="submit" value="EXECUTE CODE" />
           </form>
         </div>
-        <div className="panel panel-d">
+        <div className="panel-d">
           <h2>TERMINAL</h2>
           <div id="terminal-prompt"></div>
           <pre id="response" className="typing-effect">
-            {response}
+            <code>
+          {response}
+          </code>
           </pre>
         </div>
       </div>
@@ -138,4 +144,13 @@ const ApiTerminal = ({ clientNr, explorerId, productName, workflowName, taskId,a
   );
 };
 
+
+function isJSON(str) {
+  try {
+    JSON.parse(str);
+    return true;
+  } catch (e) {
+    return false;
+  }
+}
 export default ApiTerminal;

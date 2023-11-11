@@ -24,7 +24,8 @@
     flex: 7; /* Set the flex property to 7 for 70% width */
     display: flex;
     flex-direction: column;
-    width: 100%;
+    width: 100vh;
+    
   }
   
   /* Style the left panel */
@@ -42,6 +43,8 @@
  height:40%;
  width: 100%;
  flex: 3; /* Don't flex, maintain the specified height */
+ 
+  
 }
 
 /* Style the lower panel separately */
@@ -50,6 +53,26 @@
   flex: 7; /* Don't flex, maintain the specified height */
   
 }
+
+.context-menu-icon {
+  color: white;
+  background: #03A062;
+  margin: 5px;
+  cursor: pointer;
+  width: 25px;
+  height:20px;
+}
+
+.icon-right-align {
+  display: flex;
+  justify-content: flex-end;
+}
+
+
+
+
+
+
 
 
 

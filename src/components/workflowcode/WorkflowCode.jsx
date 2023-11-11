@@ -33,7 +33,7 @@ const WorkflowCode = ({ clientNr, explorerId, productName, workflowName, codeTyp
 
   useEffect(() => {
       fetchApi();
-  }, [codeType]);
+  }, [clientNr, explorerId, productName, workflowName, codeType]);
 
   
 

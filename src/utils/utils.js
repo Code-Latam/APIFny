@@ -262,12 +262,13 @@ body: JSON.stringify(data${api.name.replace(/\s/g, '')})
       return javascriptCode;
 }
 
-export function convertToOpenAPI(apiObjects, workflowName) {
+export function convertToOpenAPI(apiObjects, title, titleDescription) {
+  
   const openAPIObject = {
     openapi: '3.0.0', // Specify the OpenAPI version
     info: {
-      title: apiObjects[0].name || 'Default Title',
-      description: apiObjects[0].description || 'Default Description',
+      title: title,
+      description: titleDescription,
       version: '1.0.0',
     },
     paths: {},
