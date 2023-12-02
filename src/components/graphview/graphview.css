@@ -8,6 +8,7 @@
     width: 100%;
     overflow-x:auto; /* Enable horizontal scrolling */
     white-space: nowrap; /* Prevent graphs from wrapping to the next line */
+    
   }
   
   .top-part {
@@ -19,6 +20,7 @@
     border: 1px solid #03A062;
     overflow-x:auto; /* Enable horizontal scrolling */
   white-space: nowrap; /* Prevent graphs from wrapping to the next line */
+  padding-left: 15px;
     
   }
   
@@ -34,4 +36,13 @@
     cursor: pointer;
     margin:10px;
     color:blue
+  }
+
+  .actionButton
+  {
+    margin-right: 5px;
+  }
+  .buttons
+  {
+    margin-left: 0px;
   }

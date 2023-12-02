@@ -8,7 +8,11 @@ import Graphview from "../../components/graphview/Graphview";
 import Productview from "../productview/Productview";
 import Workflowview from '../workflowview/Workflowview';
 import Taskview from '../taskview/Taskview';
+import Linkview from '../linkview/Linkview';
 import ContextMenu from "../contextmenu/ContextMenu"; 
+import Modalworkflow from "../modalworkflow/Modalworkflow"; 
+import Modalproduct from "../modalproduct/Modalproduct"; 
+import Chatbot from "../chatbot/Chatbot"; 
 import { FiMoreVertical } from 'react-icons/fi'
 import {convertToOpenAPI} from "../../utils/utils.js";
 import jsYaml from 'js-yaml';
@@ -37,17 +41,36 @@ const TreeNode = ({ label, children, isChild, topLevelClick }) => {
   );
 };
 
-const ProductTree = () => {
+const ProductTree = ({designerMode}) => {
   const [selectedItemType, setSelectedItemType] = useState(null);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [selectedWork, setSelectedWorkflow] = useState(null);
   const [selectedTaskId, setSelectedTaskId] = useState(null);
+  const [selectedLink, setSelectedLink] = useState(null);
   const [selectedApi, setSelectedApi] = useState(null);
   const [selectedCodeType, setCodeType] = useState(null);
   const [products, setProducts] = useState([]);
   const [selectedMenu,setMenu ] = useState(null);
   const [contextMenuVisible, setContextMenuVisible] = useState(false); 
-  const [contextMenuPosition, setContextMenuPosition] = useState({ x: 0, y: 0 }); 
+  const [contextMenuPosition, setContextMenuPosition] = useState({ x: 0, y: 0 });
+  const [newTreeItem, setNewTreeItem] = useState(0);
+  const [newGraphItem, setNewGraphItem] = useState(0);
+
+  const [isWorkflowModalOpen, setIsWorkflowModalOpen] = useState(false);
+  const [isProductModalOpen, setIsProductModalOpen] = useState(false);
+
+  const openWorkflowModal = () => {
+    setIsWorkflowModalOpen(true);
+  };
+
+  const openProductModal = () => {
+    setIsProductModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsWorkflowModalOpen(false);
+    setIsProductModalOpen(false);
+  };
 
   async function exportApiOpenApi(ExportApiName)
   {
@@ -229,10 +252,6 @@ const ProductTree = () => {
 
 
   const handleSelectedItemChange = (newselectItem,newProductName,newWorkflowName,newApiName, newTaskId) => {
-    console.log("We are in product Tree");
-    console.log(newselectItem);
-    console.log(newWorkflowName);
-    console.log(newTaskId);
     
     setSelectedItemType(newselectItem);
     setSelectedProduct(newProductName);
@@ -240,7 +259,18 @@ const ProductTree = () => {
     setSelectedTaskId(newTaskId);
     setSelectedApi(newApiName);
     setSelectedWorkflow(newWorkflowName);
+    setSelectedLink(null);
   };
+
+  const handleSelectedLinkChange = (newselectItem,newProductName,newWorkflowName,newLink) => {
+    
+    setSelectedItemType(newselectItem);
+    setSelectedProduct(newProductName);
+    setSelectedWorkflow(newWorkflowName);
+    setSelectedLink(newLink)
+    setSelectedTaskId(null)
+  };
+
 
   const handleProductClick = (product) => {
     console.log("product clicked");
@@ -262,7 +292,7 @@ const ProductTree = () => {
     // Fetch the initial products using an API call
     // Replace this with your actual API endpoint
     fetchProducts();
-  }, []);
+  }, [newTreeItem]);
 
   const fetchProducts = async () => {
     
@@ -330,7 +360,19 @@ const ProductTree = () => {
   return (
     <div className="main-container">
         <div className="left-container">
+          {designerMode && (
+          <div>
+          <button className="open-modal-button" onClick={openProductModal}>
+          Add Product
+          </button>
+          <button className="open-modal-button" onClick={openWorkflowModal}>
+          Add Workflow
+          </button>
           <br></br>
+          <br></br>
+          </div>
+          )}
+
           {renderTree(products, false)}
         </div>
       <div className = "right-container">
@@ -339,13 +381,33 @@ const ProductTree = () => {
             selectedProduct={selectedProduct}
             selectedWork={selectedWork}
             onTaskChange = {handleSelectedItemChange}
+            onLinkChange = {handleSelectedLinkChange}
+            graphChange = {newGraphItem}
+            designerMode={designerMode}
           />
         </div>
-        <div className="lower-panel">
-
+        <div className='lower-panel'>
+        <div className="lower-left-panel">
         <div className="icon-right-align">
           <FiMoreVertical className="context-menu-icon" onClick={handleContextMenuClick} />
         </div>
+
+        {isWorkflowModalOpen && (
+        <Modalworkflow
+          onClose={() => {
+            setIsWorkflowModalOpen(false);
+            setNewTreeItem(newTreeItem+1);
+          }}
+        />
+      )}
+       {isProductModalOpen && (
+        <Modalproduct
+          onClose={() => {
+            setIsProductModalOpen(false);
+            setNewTreeItem(newTreeItem+1);
+          }}
+        />
+      )}
 
           {contextMenuVisible && (
             <ContextMenu
@@ -361,6 +423,10 @@ const ProductTree = () => {
         clientNr = {clientNr}
         explorerId = {explorerId}
         productName = {selectedProduct}
+        designerMode = {designerMode}
+        updateTreeView = {() => {
+          setNewTreeItem(newTreeItem+1);
+        }}
         /> 
         : null}
         {selectedItemType === 'workflow' ?
@@ -369,6 +435,10 @@ const ProductTree = () => {
          explorerId = {explorerId}
          productName = {selectedProduct}
          name = {selectedWork}
+         designerMode = {designerMode}
+         updateTreeView = {() => {
+          setNewTreeItem(newTreeItem+1);
+        }}
        /> 
          : null} 
         {selectedItemType === 'task' || selectedItemType === 'taskapi' ?
@@ -377,6 +447,22 @@ const ProductTree = () => {
          explorerId = {explorerId}
          workflowName = {selectedWork}
          taskId = {selectedTaskId}
+         designerMode = {designerMode}
+         updateGraphView = {() => {
+          setNewGraphItem(newGraphItem+1);
+        }}
+       /> 
+         : null} 
+        {selectedItemType === 'link' ?
+         <Linkview
+         clientNr = {clientNr}
+         explorerId = {explorerId}
+         workflowName = {selectedWork}
+         mylink = {selectedLink}
+         designerMode = {designerMode}
+         updateGraphView = {() => {
+          setNewGraphItem(newGraphItem+1);
+        }}
        /> 
          : null} 
         {selectedItemType === 'api'  ?
@@ -411,7 +497,17 @@ const ProductTree = () => {
        /> 
          : null} 
         </div>
+        <div classname= "lower-right-panel">
+          <div className = "title-wrap">
+          <div className= "title-bot"> AI Podium</div>
+          </div>
+          <Chatbot
+           clientNr = {clientNr}
+          />
+        </div>
       </div>
+      </div>
+      
       </div>
   );
   

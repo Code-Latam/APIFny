@@ -1,16 +1,16 @@
-.modalDialog {
+.ProductmodalDialog {
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background-color: white;
-    border: 1px solid #ccc;
-    padding: 20px;
+    background-color: #ccc;
+    border: 1px solid #03A062;
+    padding: 5px;
    
     z-index: 1000;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     border-radius: 5px;
-    width: 350px;
+    width: 400px;
   }
 
   .modalDialog div {
@@ -28,13 +28,22 @@
   
   .modal-content {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: space-between; /* Align items on the same row */
     align-items: center; /* Vertically center items */
     /* Your existing styles... */
   }
   
-  .modalcancelbutton {
+  .modalclosebutton {
+    margin-left: 5px;
+    padding: 5px;
+    cursor: pointer;
+    background-color: white;
+    color: black;
+    border-radius: 5px;
+  }
+
+  .modalsavebutton {
     margin-left: 5px;
     padding: 5px;
     cursor: pointer;
@@ -76,7 +85,7 @@
    font-weight: 200;
   }
 
-  .closex
+  .close
   {
     text-align: right;
   }
@@ -88,7 +97,7 @@
     width:350px;
     border-radius: 5px;
   }
-  .inputname
+  .ProductModalinputname
   {
     margin-bottom: 10px;
     margin-top: 10px;
@@ -99,7 +108,7 @@
 
   .switch-container {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     align-items:normal; 
     gap: 10px;
   }

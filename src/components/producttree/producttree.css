@@ -1,5 +1,6 @@
 .tree-node {
     color: #03A062;
+    cursor: pointer;
   }
   
   /* Apply indentation for child nodes */
@@ -11,6 +12,7 @@
   .workflow {
     color: #03A062;
     margin-left: 30px;
+    cursor: pointer;
   }
 
   /* Set up a main container to hold the left and right panels */
@@ -21,7 +23,7 @@
   }
   
   .right-container {
-    flex: 7; /* Set the flex property to 7 for 70% width */
+    flex: 7; /* Set the flex property to 8 for 70% width */
     display: flex;
     flex-direction: column;
     width: 100vh;
@@ -30,9 +32,10 @@
   
   /* Style the left panel */
   .left-container {
-    width: 30%;
+    width: 20%;
     height: 100%;
     min-width: 350px;
+    padding: 10px;
   }
   
 
@@ -49,9 +52,26 @@
 
 /* Style the lower panel separately */
 .lower-panel {
+  display: flex;
   border: 1px solid #03A062;
-  flex: 7; /* Don't flex, maintain the specified height */
+  flex: 8;
+  flex-direction: row;
   
+}
+
+.lower-left-panel {
+  border: 1px solid #03A062;
+  width: 70%;
+
+}
+
+.lower-right-panel {
+  
+  
+  color: #03A062;
+  background-color: white;
+  width: 30%;
+
 }
 
 .context-menu-icon {
@@ -66,6 +86,20 @@
 .icon-right-align {
   display: flex;
   justify-content: flex-end;
+}
+
+.open-modal-button {
+  margin-right: 5px;
+  background-color: #ccc;
+}
+
+.title-wrap {
+  text-align: center;
+}
+
+.title-bot {
+  color: #03A062;
+  text-decoration: underline;
 }
 
 

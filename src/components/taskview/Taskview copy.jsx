@@ -4,13 +4,13 @@ import axios from "axios";
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css'; // import styles
 import htmlToMd from 'html-to-md';
-import ReactMarkdown from 'react-markdown';
-import { renderToString } from 'react-dom/server';
+// import ReactMarkdown from 'react-markdown';
+
 
 function Taskview({ clientNr, explorerId, workflowName, taskId, designerMode,updateGraphView }) {
 
-  console.log("TASKVIEW DESIGNERMODE");
-  console.log(designerMode);
+  console.log("We are in Taskview");
+  const [workflow, setWorkflow] = useState(null);
   const [task, setTask] = useState(null);
   const [selectedType, setSelectedType] = useState("circle");
   const [selectedApi, setSelectedApi] = useState("");
@@ -91,24 +91,8 @@ function Taskview({ clientNr, explorerId, workflowName, taskId, designerMode,upd
     description: value,
   }));
   const markdownContent = htmlToMd(value);
-  setMarkdownContent(markdownContent);
+    setMarkdownContent(markdownContent);
 };
-
-const handleTextareaChange = (e) => {
-  // Assuming e.target.value contains Markdown content
-  const markdownContent = e.target.value;
-  const htmlContent = <ReactMarkdown>{markdownContent}</ReactMarkdown>;
-  const htmlString = renderToString(htmlContent);
-  
-  console.log("HTML VALUE");
-  console.log(htmlContent);
-  setTask((prevTask) => ({
-    ...prevTask,
-    description: htmlString,
-  }));
-  setMarkdownContent(markdownContent);
-};
-
   const handleNameChange = (event) => {
     setTask((prevTask) => ({
       ...prevTask,
@@ -194,7 +178,7 @@ const handleTextareaChange = (e) => {
               <label htmlFor="workflowDescription">Description</label>
               <br />
               {isRichTextMode ? (
-                 <div style={{ height: "150px", overflowY: "auto", width: "780px", marginTop: "10px" , marginBottom: "14px", border: "1px solid white" }}>
+                 <div style={{ height: "150px", overflowY: "auto", width: "800px", marginTop: "10px" , marginBottom: "14px", border: "1px solid white" }}>
                 <ReactQuill
                   value={task.description}
                   modules={{
@@ -209,8 +193,7 @@ const handleTextareaChange = (e) => {
                   theme = "snow"
                   className="Taskviewinput"
                   onChange={handleDescriptionChange}
-                  
-                  
+                  disabled = {!designerMode}         
                 />
                 </div>
               ) : (
@@ -219,7 +202,6 @@ const handleTextareaChange = (e) => {
               className="Markdowninput"
               disabled = {!designerMode}
               style={{ height: "150px", overflowY: "auto", width: "800px" }}
-              onChange={handleTextareaChange}
             />
               )}
             </div>
@@ -228,11 +210,11 @@ const handleTextareaChange = (e) => {
           <p>Loading Task information...</p>
         )}
       </div>
-      {designerMode && (<div>
+      <div>
         <button className='editorButton' onClick={toggleDisplayMode}>
-          {isRichTextMode ? 'Use Markdown Editor' : 'Use Rich Text Editor'}
+          {isRichTextMode ? 'Display Markdown' : 'Rich Text Editor'}
         </button>
-      </div>)}
+      </div>
       {designerMode && (
               <div>
                 <button className = 'editorButton' onClick={handleUpdate}>Update</button>
