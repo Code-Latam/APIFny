@@ -1,57 +1,42 @@
-.Productview {
+.Workflowview {
     background-color: black;
     padding: 20px;
     color: #03A062;
    
   }
 
-  .Productviewtop {
+  .Workflowviewtop {
     font-size: 50;
     display: flex;
     justify-content: space-between; /* Align items on the same row */
     align-items: center; /* Vertically center items */
   }
   
-  .input-container {
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px;
-  }
 
-  .input-label {
-    display: inline-block;
-    width: 120px; /* Fixed width for labels */
-    text-align: left;
-  }
-
-  .ProductViewNameinput
+  .WorkflowSequenceViewinput
   {
     margin-bottom: 10px;
     margin-top: 10px;
-    width: 300px;
     background-color: #ccc;
-    margin-left: 10px;
+    width:50px;
+   
   }
-
-  .ProductViewStatusinput
+  
+  .WorkflowViewinputname
   {
     margin-bottom: 10px;
     margin-top: 10px;
-    width: 100px;
     background-color: #ccc;
-    margin-left: 10px;
+    width:800px;
+   
   }
 
-  .ProductViewSequenceinput
+  .WorkflowViewinput
   {
     margin-bottom: 10px;
     margin-top: 10px;
-    width: 30px;
     background-color: #ccc;
-    margin-left: 10px;
   }
-
-
 
   .actionbutton {
     margin-right: 5px;
@@ -69,4 +54,5 @@
   .editorButton {
     margin-bottom: 5px;
   }
+  
   

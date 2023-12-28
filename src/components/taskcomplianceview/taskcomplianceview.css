@@ -13,7 +13,6 @@
     align-items: center; /* Vertically center items */
   }
   
-
   .TaskViewinputname
   {
     margin-bottom: 10px;
@@ -21,7 +20,6 @@
     background-color: #ccc;
     width:500px;
   }
- 
 
   .Markdowninput
   {

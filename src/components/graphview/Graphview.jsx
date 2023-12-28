@@ -11,6 +11,7 @@ const Graphview = ({ selectedProduct, selectedWork,onTaskChange,onLinkChange,gra
   console.log("SUPERDESIGNERMODE");
   console.log(designerMode);
   const config = {
+   
     nodeHighlightBehavior: true,
     directed: true,
     node: 
@@ -27,7 +28,7 @@ const Graphview = ({ selectedProduct, selectedWork,onTaskChange,onLinkChange,gra
       renderArrow: true,
       strokeWidth: 2,
     },
-    width: 400, // Set the width of the graph (adjust as needed)
+    width: 500, // Set the width of the graph (adjust as needed)
     height: 300, // Set the height of the graph (adjust as needed)
     "freezeAllDragEvents": !designerMode,
     "staticGraph": !designerMode,
@@ -286,20 +287,14 @@ const Graphview = ({ selectedProduct, selectedWork,onTaskChange,onLinkChange,gra
 
    
 
-    const handleShowModaltask = (nodeId,node) => {
-      setSelectedTask(node);
-      setShowModaltask(true);
-    };
 
     const fetchData = async () => {
       try {
         const mybody = {
           clientNr: process.env.REACT_APP_CLIENTNR,
           explorerId: process.env.REACT_APP_EXPLORERID,
-        };
-        console.log("in fetch");
-        console.log(selectedProduct);
-        console.log(selectedWork);
+          status: designerMode ? "All" : "Public",
+        }
 
         if (selectedProduct && selectedWork) {
           // Case: Both product and workflow are selected

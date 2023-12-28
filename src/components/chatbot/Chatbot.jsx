@@ -20,7 +20,7 @@ const Chatbot = ({clientNr}) => {
         const requestData = {
           clientNr: '111111',
           gwoken: 'saasasasas',
-          chatbotKey: 'apifny2',
+          chatbotKey: 'apifny1',
           prompt: prompt,
         };
 

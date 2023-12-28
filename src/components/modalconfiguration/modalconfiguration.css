@@ -1,4 +1,4 @@
-.modalDialog {
+.ConfigurationmodalDialog {
     position: fixed;
     top: 50%;
     left: 50%;
@@ -10,7 +10,7 @@
     z-index: 1000;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     border-radius: 5px;
-    width: 400px;
+    width: 850px;
   }
 
   .modalDialog div {
@@ -98,7 +98,7 @@
     width:350px;
     border-radius: 5px;
   }
-  .WorkflowModalinputname
+  .YamlModalinputname
   {
     margin-bottom: 10px;
     margin-top: 10px;

@@ -29,6 +29,7 @@
     "langchain": "^0.0.75",
     "node-forge": "^1.3.1",
     "prettier": "^3.0.3",
+    "quill-image-drop-module": "^1.0.3",
     "react": "^17.0.2",
     "react-copy-to-clipboard": "^5.1.0",
     "react-d3-graph": "^2.6.0",

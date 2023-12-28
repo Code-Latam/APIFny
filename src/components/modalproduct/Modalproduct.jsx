@@ -6,7 +6,7 @@ function Modalproduct({ onClose }) {
 
   const [products, setProducts] = useState([]);
 
-  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [selectedSequence, setSelectedSequence] = useState("1");
   const [selectedProductName, setSelectedProductName] = useState("No Name Yet");
   const [selectedProductDescription, setSelectedProductDescription] = useState("No Description Yet");
   
@@ -23,24 +23,37 @@ function Modalproduct({ onClose }) {
     setSelectedProductDescription(event.target.value)
     }
 
+  const handleSequenceChange = (event) => {
+      const inputValue = event.target.value;
+    
+      // Check if the input is a valid number
+      if (/^\d+$/.test(inputValue) || inputValue === '') {
+        // If it's a valid number or an empty string, update the state
+        setSelectedSequence(inputValue);
+      }
+      // If it's not a valid number, you can choose to do nothing or provide feedback to the user
+      // For example, show an error message or prevent further action
+    };
 
   
   const handleSave = async () => {
     // Perform save logic with selectedSource and selectedTarget
     // You can use these values to update your backend or state, as needed
-    if (await handleCreateProduct(selectedProductName,selectedProductDescription))
+    if (await handleCreateProduct(selectedProductName,selectedProductDescription, selectedSequence))
     {
       onClose(); 
     }  
   };
 
-  async function handleCreateProduct(productName, productDescription) {
+  async function handleCreateProduct(productName, productDescription, sequence) {
     try {
       const mypayload = {
         clientNr: process.env.REACT_APP_CLIENTNR,
         explorerId: process.env.REACT_APP_EXPLORERID,
         productName: productName,
-        description: productDescription
+        sequence: sequence,
+        description: productDescription,
+        status: "Private",
       };
   
       const response = await axios.post(process.env.REACT_APP_CENTRAL_BACK + "/product/register", mypayload);
@@ -85,7 +98,17 @@ function Modalproduct({ onClose }) {
                 onChange={handleNameChange}
               />
               <div>
-            </div>
+              <label htmlFor="sequence">sequence in product tree</label>
+              <br />
+              <input
+                type="text"
+                id="sequence"
+                value={selectedSequence}
+                className="WorkflowSequenceViewinput"
+                onChange={handleSequenceChange}
+          
+              />
+              </div>
             <div>
               <label htmlFor="productDescription">Description</label>
               <br />

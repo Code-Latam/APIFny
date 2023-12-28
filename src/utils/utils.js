@@ -200,7 +200,7 @@ function CalculateSignature(token,parameters)
 
       export function generatePythonCode(api, explorer, requestBodyFields) {
         // Generate Python code for making an API call using requests library
-        const url = explorer.apiEndpoint + api.urlRoute;
+        const url = api.urlRoute;
         const method = api.method;
         const headers = api.headers.map(header => {
           const [key, value] = header.split(':');
@@ -233,7 +233,7 @@ function CalculateSignature(token,parameters)
         // Generate JavaScript code for making an API call using fetch
         console.log("API OBJECT");
           console.log(api);
-        const url = explorer.apiEndpoint + api.urlRoute;
+        const url = api.urlRoute;
         const method = api.method;
         const headers = Object.fromEntries(api.headers.map(header => {
           const [key, value] = header.split(':');

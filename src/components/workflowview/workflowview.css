@@ -12,23 +12,47 @@
     align-items: center; /* Vertically center items */
   }
   
-
+  .input-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
   
-  .WorkflowViewinputname
-  {
-    margin-bottom: 10px;
-    margin-top: 10px;
-    background-color: #ccc;
-    width:800px;
-   
+  .input-label {
+    display: inline-block;
+    width: 140px; /* Fixed width for labels */
+    text-align: left;
   }
 
-  .WorkflowViewinput
+  .WorkflowViewNameinput
   {
     margin-bottom: 10px;
     margin-top: 10px;
+    width: 300px;
     background-color: #ccc;
+    margin-left: 10px;
   }
+
+  .WorkflowViewStatusinput
+  {
+    margin-bottom: 10px;
+    margin-top: 10px;
+    width: 100px;
+    background-color: #ccc;
+    margin-left: 10px;
+  }
+
+  .WorkflowViewSequenceinput
+  {
+    margin-bottom: 10px;
+    margin-top: 10px;
+    width: 30px;
+    background-color: #ccc;
+    margin-left: 10px;
+  }
+  
+
+ 
 
   .actionbutton {
     margin-right: 5px;

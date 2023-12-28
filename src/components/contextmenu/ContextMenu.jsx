@@ -32,11 +32,12 @@ import {
       selectedItemType === "api" ||
       selectedItemType === "apicode" ||
       selectedItemType === "workflowcode" ||
-      selectedItemType === "taskapi";;
+      selectedItemType === "taskapi" ||
+      selectedItemType === "apicompliance";
   
     return (
       <div className="context-menu" style={{ top: position.y, left: position.x }}>
-        {(isCodeItem || selectedItemType === "workflow") && (
+        {(isCodeItem || selectedItemType === "workflow" || selectedItemType === "workflowcompliance") && (
           <>
             {isCodeItem  && selectedItemType !== "workflowcode" && (
               <>
@@ -75,7 +76,11 @@ import {
         <div className="menu-item" onClick={() => handleMenuItemClick("description")}>
               <Description className="menu-icon" />
               <span className="menu-text">Description</span>
-            </div>
+        </div>
+        <div className="menu-item" onClick={() => handleMenuItemClick("compliancedescription")}>
+              <Description className="menu-icon" />
+              <span className="menu-text">Compliance..</span>
+        </div>
         <div className="menu-item" onClick={() => handleMenuItemClick("Close")}>
           <Close className="menu-icon" />
           <span className="menu-text">Close</span>

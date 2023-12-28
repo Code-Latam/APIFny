@@ -1,0 +1,155 @@
+.fileInput{
+    height: 32px;
+    margin-top: 25px;
+    margin-right: 0px;
+    border-radius: 10px;
+    border: 1px solid gray;
+    padding-top: 10px;
+    padding-left: 10px;
+    background-color: white;
+    color: grey;
+    font-size: 18px;
+
+}
+
+.urlInput{
+    height: 50px;
+    border-radius: 10px;
+    border: 1px solid gray;
+    font-size: 18px;
+    padding-left: 20px;
+    margin-top: 10px
+}
+.uploadBox{
+    height: 70px;
+    padding: 5px;
+    background-color: transparent;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.uploadelements
+ {
+    height:25px;
+    width: 250px;
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+    align-items: left;
+    margin-bottom: 10px;
+    margin-top: 10px;
+    
+    border-radius: 2px;
+    color: white;
+  }
+
+.myupload
+{
+    height: 25px;
+    border-radius: 10px;
+    border: none;
+    background-color: #0e3a74;
+    ;
+    color: white;
+    font-size: 20px;
+    font-weight: 500;
+    cursor: pointer;
+
+margin-top: 18px;
+
+}
+
+.progressContainer {
+    display: flex;
+    align-items: center;
+    margin-top: 30px;
+    margin-bottom: 30px;
+  }
+  
+  .progressBar {
+    flex-grow: 1;
+    height: 20px;
+    margin-right: 10px; /* Adjust this margin as needed */
+  }
+  
+  .progressText {
+    width: 40px; /* Adjust the width as needed */
+    text-align: right;
+  }
+
+  .confirmationDialog {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 350px;
+    
+    background-color: #ccc;
+    border: 1px solid #03A062;
+    padding: 10px;
+   
+    z-index: 1000;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+    color: black
+  }
+  
+  .confirmationDialog p {
+    margin: 0 0 20px;
+  }
+  
+  .cancelbutton {
+    margin-left: 5px;
+    padding: 5px;
+    cursor: pointer;
+    background-color: black;
+    color: white;
+    border-radius: 5px;
+  }
+
+  .proceedbutton {
+    margin-left: 5px;
+    padding: 5px;
+    cursor: pointer;
+    background-color: white;
+    color: black;
+    border-radius: 5px;
+  }
+  
+  
+  .confirmationDialog-buttons {
+    text-align: right;
+  }
+
+  
+
+  .KMLFileText {
+    text-align: left;
+  }
+
+  .filetext {
+    text-align: left;
+    border: 1px solid #1B3633; 
+    padding: 10px; 
+    border-radius: 5px;
+    margin-bottom: 10px;
+  }
+
+  .my-custom-file-label {
+    display: block;
+    color:black;
+    background-color: #ccc;
+    border: 10px green;
+    cursor: pointer;
+    margin:5px;
+    text-decoration: underline;
+  }
+
+.fileInput {
+
+  border: 5px green;
+  margin:5px;
+
+}
+

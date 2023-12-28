@@ -12,46 +12,13 @@
     align-items: center; /* Vertically center items */
   }
   
-  .input-container {
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px;
-  }
 
-  .input-label {
-    display: inline-block;
-    width: 120px; /* Fixed width for labels */
-    text-align: left;
-  }
-
-  .ProductViewNameinput
+  .ProductViewinput
   {
     margin-bottom: 10px;
     margin-top: 10px;
-    width: 300px;
     background-color: #ccc;
-    margin-left: 10px;
   }
-
-  .ProductViewStatusinput
-  {
-    margin-bottom: 10px;
-    margin-top: 10px;
-    width: 100px;
-    background-color: #ccc;
-    margin-left: 10px;
-  }
-
-  .ProductViewSequenceinput
-  {
-    margin-bottom: 10px;
-    margin-top: 10px;
-    width: 30px;
-    background-color: #ccc;
-    margin-left: 10px;
-  }
-
-
 
   .actionbutton {
     margin-right: 5px;

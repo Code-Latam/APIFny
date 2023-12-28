@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import "./modalworkflow.css";
+import "./modalapidefimport.css";
+import FileUpload from '../fileupload/FileUpload';
 
-function Modalworkflow({ onClose }) {
+function Modalapidefimport({ onClose }) {
 
   const [products, setProducts] = useState([]);
 
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [selectedWorkflowName, setSelectedWorkflowName] = useState("No Name Yet");
   const [selectedWorkflowDescription, setSelectedWorkflowDescription] = useState("No Description Yet");
-  const [selectedSequence, setSelectedSequence] = useState("1");
+  
 
   useEffect(() => {
     const fetchData = async () => {
@@ -48,38 +49,25 @@ function Modalworkflow({ onClose }) {
     setSelectedWorkflowDescription(event.target.value)
     }
 
-    const handleSequenceChange = (event) => {
-      const inputValue = event.target.value;
-    
-      // Check if the input is a valid number
-      if (/^\d+$/.test(inputValue) || inputValue === '') {
-        // If it's a valid number or an empty string, update the state
-        setSelectedSequence(inputValue);
-      }
-      // If it's not a valid number, you can choose to do nothing or provide feedback to the user
-      // For example, show an error message or prevent further action
-    };
 
   
   const handleSave = async () => {
     // Perform save logic with selectedSource and selectedTarget
     // You can use these values to update your backend or state, as needed
-    if (await handleCreateProduct(selectedProduct, selectedWorkflowName,selectedWorkflowDescription, selectedSequence))
+    if (await handleCreateProduct(selectedProduct, selectedWorkflowName,selectedWorkflowDescription))
     {
       onClose(); 
     }  
   };
 
-  async function handleCreateProduct(productName, workflowName, workflowDescription, sequence) {
+  async function handleCreateProduct(productName, workflowName, workflowDescription) {
     try {
       const mypayload = {
         clientNr: process.env.REACT_APP_CLIENTNR,
         explorerId: process.env.REACT_APP_EXPLORERID,
         productName: productName,
         name: workflowName,
-        sequence: sequence,
-        description: workflowDescription,
-        status: "Private",
+        description: workflowDescription
       };
   
       const response = await axios.post(process.env.REACT_APP_CENTRAL_BACK + "/workflow/register", mypayload);
@@ -107,70 +95,20 @@ function Modalworkflow({ onClose }) {
   return (
     <div className="modalDialog">
       <div>
-        <div className="top">
-          <div className="left">Add new Workflow</div>
+        <div className="topapidef">
+          <div className="leftapiImport">Import Api Definitions</div>
           <div className="close" onClick={onClose}>
             &times;
           </div>
         </div>
 
         <div className="switch-container">
-          <label htmlFor="products">Product</label>
-          <select
-            id="products"
-            value={selectedProduct}
-            onChange={(e) => setSelectedProduct(e.target.value)}
-          >
-            {products.map((product) => (
-              <option key={product.productName} value={product.productName}>
-                {product.productName}
-              </option>
-            ))}
-          </select>
-
-          <div>
-              <label htmlFor="workflowName">Workflow Name</label>
-              <br />
-              <input
-                type="text"
-                id="workflowName"
-                value={selectedWorkflowName}
-                className="WorkflowModalinputname"
-                onChange={handleNameChange}
-              />
-            </div>
-            <div>
-              <label htmlFor="sequence">sequence in product tree</label>
-              <br />
-              <input
-                type="text"
-                id="sequence"
-                value={selectedSequence}
-                className="WorkflowSequenceViewinput"
-                onChange={handleSequenceChange}
-          
-              />
-              </div>
-            <div>
-              <label htmlFor="workflowDescription">Description</label>
-              <br />
-              <textarea
-                id="workflowDescription"
-                value={selectedWorkflowDescription}
-                className="WorkflowModalinputname"
-                onChange={handleDescriptionChange}
-                rows= "10"
-                style={{ maxHeight: "200px", overflowY: "auto", width: "350px" }}
-              />
-            </div>
+          <FileUpload />
         </div>
 
         <div className="modalDialog-buttons">
           <button className="modalclosebutton" onClick={onClose}>
             Close
-          </button>
-          <button className="modalsavebutton" onClick={handleSave}>
-            Save
           </button>
         </div>
       </div>
@@ -179,4 +117,4 @@ function Modalworkflow({ onClose }) {
 }
 
 
-export default Modalworkflow;
+export default Modalapidefimport;

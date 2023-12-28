@@ -1,0 +1,62 @@
+# possible values for Authentication-Type:
+
+# No-Authentication
+# Digital-Signature
+# Basic-Authentication
+# ApiKey
+
+##########################################
+
+
+
+Authentication-Type: Digital-Signature
+
+Global-Parameters-Header:
+  enable: no     # possible values yes or no. Use to enable global parameters.
+  parameters:
+   merchantNo: 203780
+   storeNo: 303661
+   MyCustomHeader: just-a-test
+  overwrite: yes  #posible values yes or no. Use to overwriter parameter values in api definition
+
+Global-Parameters-RequestBody:
+  enable: yes     # possible values yes or no. Use to enable global parameters.
+  parameters:
+   merchantNo: 203780
+   storeNo: 303661
+  overwrite: yes
+
+Digital-Signature:
+  location: requestBody # possible locations: requestBody or Header
+  parameterName: verifySign
+  overwrite: yes
+  token: 632e83e8fae20bccbc08beac0eb2f1d6
+  calculationFunction:
+
+    function sortObj(obj) {
+        return Object.keys(obj).sort().reduce(function (result, key) {
+          result[key] = obj[key];
+          return result; }, {});}
+
+    var ApiTokenHashvalue = crypto.MD5(token).toString();
+    var SortedParams = sortObj(parameters);
+     
+    var MyString = '';
+    for (const [key, value] of Object.entries(SortedParams)) {
+    MyString += key + '=' + value + '&';
+    }
+    MyString += ApiTokenHashvalue ;
+    const MySignature = crypto.MD5(MyString).toString();
+    return MySignature;
+##########################################
+
+Basic-Authentication:
+  overwrite: yes
+  username: StevenB
+  Password: password01
+
+#########################################
+
+HeaderBased-ApiKey-Authentication:
+  parameterName: Api-Key
+  overwrite: yes

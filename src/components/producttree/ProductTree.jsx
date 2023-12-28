@@ -6,12 +6,17 @@ import ApiCode from "../../components/apicode/ApiCode";
 import WorkflowCode from "../../components/workflowcode/WorkflowCode";
 import Graphview from "../../components/graphview/Graphview";
 import Productview from "../productview/Productview";
+import Productcomplianceview from "../productcomplianceview/Productcomplianceview";
 import Workflowview from '../workflowview/Workflowview';
+import Workflowcomplianceview from '../workflowcomplianceview/Workflowcomplianceview';
 import Taskview from '../taskview/Taskview';
+import Taskcomplianceview from '../taskcomplianceview/Taskcomplianceview';
 import Linkview from '../linkview/Linkview';
 import ContextMenu from "../contextmenu/ContextMenu"; 
 import Modalworkflow from "../modalworkflow/Modalworkflow"; 
-import Modalproduct from "../modalproduct/Modalproduct"; 
+import Modalproduct from "../modalproduct/Modalproduct";
+import Modalconfiguration from "../modalconfiguration/Modalconfiguration";
+import Modalapidefimport from "../modalapidefimport/Modalapidefimport";  
 import Chatbot from "../chatbot/Chatbot"; 
 import { FiMoreVertical } from 'react-icons/fi'
 import {convertToOpenAPI} from "../../utils/utils.js";
@@ -57,15 +62,28 @@ const ProductTree = ({designerMode}) => {
   const [newGraphItem, setNewGraphItem] = useState(0);
 
   const [isWorkflowModalOpen, setIsWorkflowModalOpen] = useState(false);
+  const [isApiDefImportModalOpen, setIsApiDefImportModalOpen] = useState(false);
   const [isProductModalOpen, setIsProductModalOpen] = useState(false);
+  const [isConfigurationModalOpen, setIsConfigurationModalOpen] = useState(false);
 
   const openWorkflowModal = () => {
     setIsWorkflowModalOpen(true);
   };
 
+  const openApiDefImportModal = () => {
+    setIsApiDefImportModalOpen(true);
+  };
+
+  openApiDefImportModal
+
   const openProductModal = () => {
     setIsProductModalOpen(true);
   };
+
+  const openConfigurationModal = () => {
+    setIsConfigurationModalOpen(true);
+  };
+
 
   const closeModal = () => {
     setIsWorkflowModalOpen(false);
@@ -200,43 +218,66 @@ const ProductTree = ({designerMode}) => {
       case 'javascript':
       case 'python':
         setMenu('code');
-        if (selectedItemType === 'api') {
+        if (selectedItemType === 'api'|| selectedItemType === 'taskapi' || selectedItemType === 'apicompliance') {
           setSelectedItemType("apicode");
-        } else if (selectedItemType === 'workflow') {
+        } else if (selectedItemType === 'workflow' || selectedItemType === 'workflowcompliance') {
           setSelectedItemType("workflowcode");
         }
         setCodeType(menuItem);
         break;
       case 'cURL':
           setMenu('cURL');
-          if (selectedItemType === 'api' || selectedItemType === 'apicode' || selectedItemType === 'taskapi' ) {
+          if (selectedItemType === 'api' || selectedItemType === 'apicode' || selectedItemType === 'taskapi' || selectedItemType === 'apicompliance' ) {
             setSelectedItemType("api");
             break;
           } 
       case 'description':
           setMenu('description');
-          if (selectedItemType === 'api' || selectedItemType === 'apicode' || selectedItemType === 'taskapi' ) {
+          if (selectedItemType === 'api' || selectedItemType === 'apicode' || selectedItemType === 'taskapi' || selectedItemType === 'apicompliance'  ) {
             setSelectedItemType("taskapi");
             break;  
           } 
-          if (selectedItemType === 'task' ) {
+          if (selectedItemType === 'task' || selectedItemType === 'taskcompliance') {
             setSelectedItemType("task");
             break;  
           } 
-          if (selectedItemType === 'workflow' || selectedItemType === 'workflowcode' ) {
+          if (selectedItemType === 'workflow' || selectedItemType === 'workflowcode'  || selectedItemType === 'workflowcompliance') {
             setSelectedItemType("workflow");
             break;
           }
+          if (selectedItemType === 'product' || selectedItemType === 'productcompliance' ) {
+            setSelectedItemType("product");
+            break;
+          }
           break;
+          case 'compliancedescription':
+            setMenu('compliancedescription');
+            if (selectedItemType === 'api' || selectedItemType === 'apicode' || selectedItemType === 'taskapi' ) {
+              setSelectedItemType("apicompliance");
+              break;  
+            } 
+            if (selectedItemType === 'task' ) {
+              setSelectedItemType("taskcompliance");
+              break;  
+            } 
+            if (selectedItemType === 'workflow' || selectedItemType === 'workflowcode' ) {
+              setSelectedItemType("workflowcompliance");
+              break;
+            }
+            if (selectedItemType === 'product' || selectedItemType === 'productcompliance' ) {
+              setSelectedItemType("productcompliance");
+              break;
+            }
+            break;
       case 'export-openapi':
         setMenu('export-openapi');
-        if (selectedItemType === 'api'|| selectedItemType === 'apicode' || selectedItemType === 'taskapi' ) {
+        if (selectedItemType === 'api'|| selectedItemType === 'apicode' || selectedItemType === 'taskapi' || selectedItemType === 'apicompliance') {
           exportApiOpenApi(selectedApi);
           break; } 
-          if (selectedItemType === 'workflow' || selectedItemType === 'workflowcode' ) {
+          if (selectedItemType === 'workflow' || selectedItemType === 'workflowcode'  || selectedItemType === 'workflowcompliance' ) {
           exportWorkflowOpenApi(selectedWork);
           break;}
-          if (selectedItemType === 'product') {
+          if (selectedItemType === 'product' || selectedItemType === 'productcompliance' ) {
             exportProductOpenApi(selectedProduct);
             break;}
         break;
@@ -297,11 +338,11 @@ const ProductTree = ({designerMode}) => {
   const fetchProducts = async () => {
     
     try {
-      const mybody = 
-      {
+      const mybody = {
         clientNr: clientNr,
-        explorerId: explorerId
-      }
+        explorerId: explorerId,
+        status: designerMode ? "All" : "Public",
+      };
       // Make the API call using axios and parse the response as JSON
       const response = await axios.post(process.env.REACT_APP_CENTRAL_BACK + "/product/gettree", mybody);
       const json = response.data;
@@ -362,11 +403,17 @@ const ProductTree = ({designerMode}) => {
         <div className="left-container">
           {designerMode && (
           <div>
+          <button className="open-modal-button" onClick={openConfigurationModal}>
+          ...
+          </button>
           <button className="open-modal-button" onClick={openProductModal}>
           Add Product
           </button>
           <button className="open-modal-button" onClick={openWorkflowModal}>
           Add Workflow
+          </button>
+          <button className="open-modal-button" onClick={openApiDefImportModal}>
+          Import Api definitions
           </button>
           <br></br>
           <br></br>
@@ -408,6 +455,21 @@ const ProductTree = ({designerMode}) => {
           }}
         />
       )}
+      {isConfigurationModalOpen && (
+        <Modalconfiguration
+          onClose={() => {
+            setIsConfigurationModalOpen(false);
+          }}
+        />
+      )}
+
+        {isApiDefImportModalOpen && (
+                <Modalapidefimport
+                  onClose={() => {
+                    setIsApiDefImportModalOpen(false);
+                  }}
+                />
+              )}
 
           {contextMenuVisible && (
             <ContextMenu
@@ -429,6 +491,17 @@ const ProductTree = ({designerMode}) => {
         }}
         /> 
         : null}
+        {selectedItemType === 'productcompliance' ? 
+        <Productcomplianceview
+        clientNr = {clientNr}
+        explorerId = {explorerId}
+        productName = {selectedProduct}
+        designerMode = {designerMode}
+        updateTreeView = {() => {
+          setNewTreeItem(newTreeItem+1);
+        }}
+        /> 
+        : null}
         {selectedItemType === 'workflow' ?
          <Workflowview
          clientNr = {clientNr}
@@ -441,6 +514,19 @@ const ProductTree = ({designerMode}) => {
         }}
        /> 
          : null} 
+        {selectedItemType === 'workflowcompliance' ?
+         <Workflowcomplianceview
+         clientNr = {clientNr}
+         explorerId = {explorerId}
+         productName = {selectedProduct}
+         name = {selectedWork}
+         designerMode = {designerMode}
+         updateTreeView = {() => {
+          setNewTreeItem(newTreeItem+1);
+        }}
+       /> 
+         : null} 
+
         {selectedItemType === 'task' || selectedItemType === 'taskapi' ?
          <Taskview
          clientNr = {clientNr}
@@ -453,6 +539,19 @@ const ProductTree = ({designerMode}) => {
         }}
        /> 
          : null} 
+
+        {selectedItemType === 'taskcompliance' ||  selectedItemType === 'apicompliance' ?
+         <Taskcomplianceview
+         clientNr = {clientNr}
+         explorerId = {explorerId}
+         workflowName = {selectedWork}
+         taskId = {selectedTaskId}
+         designerMode = {designerMode}
+         updateGraphView = {() => {
+          setNewGraphItem(newGraphItem+1);
+        }}
+       /> 
+         : null}  
         {selectedItemType === 'link' ?
          <Linkview
          clientNr = {clientNr}

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import "./productview.css";
+import "./productcomplianceview.css";
 import axios from "axios";
 import ReactQuill from 'react-quill';
 import { ImageDrop } from 'quill-image-drop-module';
@@ -8,42 +8,24 @@ import htmlToMd from 'html-to-md';
 import ReactMarkdown from 'react-markdown';
 import { renderToString } from 'react-dom/server';
 
-function Productview({ clientNr, explorerId, productName, designerMode, updateTreeView }) {
+function Productcomplianceview({ clientNr, explorerId, productName, designerMode, updateTreeView }) {
   const [product, setProduct] = useState(null);
 
   const [isRichTextMode, setIsRichTextMode] = useState(true);
 
   const [markdownContent, setMarkdownContent] = useState('');
-  const [selectedStatus, setSelectedStatus] = useState("Private");
-
-  const statusOptions = ["Private","Public"];
 
   const toggleDisplayMode = () => {
     setIsRichTextMode((prevMode) => !prevMode);
   };
 
-  const handleDescriptionChange = (value) => {
+  const handleComplianceDescriptionChange = (value) => {
     setProduct((prevProduct) => ({
       ...prevProduct,
-      description: value,
+      complianceDescription: value,
     }));
     const markdownContent = htmlToMd(value);
     setMarkdownContent(markdownContent);
-  };
-
-  const handleSequenceChange = (event) => {
-    const inputValue = event.target.value;
-  
-    // Check if the input is a valid number
-    if (/^\d+$/.test(inputValue) || inputValue === '') {
-      // If it's a valid number or an empty string, update the state
-      setProduct((prevProduct) => ({
-        ...prevProduct,
-        sequence: inputValue,
-      }));
-    }
-    // If it's not a valid number, you can choose to do nothing or provide feedback to the user
-    // For example, show an error message or prevent further action
   };
 
   const handleTextareaChange = (e) => {
@@ -56,7 +38,7 @@ function Productview({ clientNr, explorerId, productName, designerMode, updateTr
     console.log(htmlContent);
     setProduct((prevProduct) => ({
       ...prevProduct,
-      description: htmlString,
+      complianceDescription: htmlString,
     }));
     setMarkdownContent(markdownContent);
   };
@@ -68,31 +50,14 @@ function Productview({ clientNr, explorerId, productName, designerMode, updateTr
     // Define the request body
     const requestBody = {
       clientNr: clientNr,
-      explorerId: explorerId,  
+      explorerId: explorerId,
+      
       productName:product.productName,
-      sequence: product.sequence,
-      description: product.description,
-      status: selectedStatus
+      complianceDescription: product.complianceDescription
     };
 
       const myResponse = await axios.post(apiUrl, requestBody);
       alert("Product was succesfully updated.");
-
-  };
-
-  const handleDelete = async () => {
-    const apiUrl = process.env.REACT_APP_CENTRAL_BACK + '/product/delete';
-
-    // Define the request body
-    const requestBody = {
-      clientNr: clientNr,
-      explorerId: explorerId, 
-      productName:product.productName,
-    };
-
-      const myResponse = await axios.post(apiUrl, requestBody);
-      alert("Product was succesfully removed.");
-      updateTreeView();
 
   };
 
@@ -106,7 +71,8 @@ function Productview({ clientNr, explorerId, productName, designerMode, updateTr
       explorerId,
       productName,
     };
-
+    console.log("IN FETCH");
+    console.log(requestBody);
     // Make a POST request to fetch the product
     fetch(apiUrl, {
       method: 'POST',
@@ -118,9 +84,10 @@ function Productview({ clientNr, explorerId, productName, designerMode, updateTr
       .then((response) => response.json())
       .then((data) => {
         // Set the fetched product data to the state
+        console.log("DATA");
+        console.log(data);
         setProduct(data);
-        setSelectedStatus(data.status);
-        const markdownContent = htmlToMd(data.description);
+        const markdownContent = htmlToMd(data.complianceDescription);
         setMarkdownContent(markdownContent);
       })
       .catch((error) => {
@@ -134,51 +101,24 @@ function Productview({ clientNr, explorerId, productName, designerMode, updateTr
         
         {product ? (
           <div>
-            <div className = "input-container">
-              <label className = "input-label" htmlFor="productName">Product Name:</label>
+            <div>
+              <label htmlFor="productName">Product Name</label>
+              <br />
               <input
                 type="text"
                 id="productName"
                 value={product.productName}
-                className="ProductViewNameinput"
+                className="ProductViewinput"
                 disabled
               />
             </div>
-            <div className = "input-container">
-            <label className = "input-label" htmlFor="status">Status:</label>
-              <select
-                id="status"
-                value={selectedStatus}
-                className="ProductViewStatusinput"
-                onChange={(e) => setSelectedStatus(e.target.value)}
-                disabled={!designerMode }
-              >
-                {statusOptions.map((type) => (
-                  <option key={type} value={type}>
-                    {type}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div className = "input-container">
-              <label className = "input-label" htmlFor="sequence">Sequence:</label>
-              <input
-                type="text"
-                id="sequence"
-                value={product.sequence}
-                className="ProductViewSequenceinput"
-                onChange={handleSequenceChange}
-                disabled = {!designerMode} 
-          
-              />
-            </div>
             <div>
-              <label htmlFor="productDescription">Description:</label>
+              <label htmlFor="productDescription">Compliance Description</label>
               <br />
               {isRichTextMode ? (
                  <div style={{ height: "150px", overflowY: "auto", width: "780px", marginTop: "10px" , marginBottom: "14px", border: "1px solid white" }}>
                 <ReactQuill
-                  value={product.description}
+                  value={product.complianceDescription}
                   modules={{
                     toolbar: [
                       [{ header: [1, 2,3, false] }],
@@ -189,8 +129,8 @@ function Productview({ clientNr, explorerId, productName, designerMode, updateTr
                     ],
                   }}
                   theme = "snow"
-                  className="Productviewinput"
-                  onChange={handleDescriptionChange}
+                  className="ProductComplienceviewinput"
+                  onChange={handleComplianceDescriptionChange}
                   disabled = {!designerMode} 
                   readOnly =  {!designerMode}        
                 />
@@ -218,11 +158,10 @@ function Productview({ clientNr, explorerId, productName, designerMode, updateTr
       {designerMode && (
               <div>
                 <button className = "actionbutton" onClick={handleUpdate}>Update</button>
-                <button className = "actionbutton" onClick={handleDelete}>Remove</button>
               </div>
             )}
     </div>
   );
 }
 
-export default Productview;
+export default Productcomplianceview;
