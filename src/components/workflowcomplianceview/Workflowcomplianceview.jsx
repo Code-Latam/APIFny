@@ -116,7 +116,7 @@ function Workflowcomplianceview({ clientNr, explorerId, productName, name, desig
               <label htmlFor="workflowComplianceDescription">Compliance Description</label>
               <br />
               {isRichTextMode ? (
-                 <div style={{ height: "150px", overflowY: "auto", width: "780px", marginTop: "10px" , marginBottom: "14px", border: "1px solid white" }}>
+                 <div style={{ height: "150px", overflowY: "auto", width: "700px", marginTop: "10px" , marginBottom: "14px", border: "1px solid white" }}>
                 <ReactQuill
                   value={workflow.complianceDescription}
                   modules={{
@@ -140,7 +140,7 @@ function Workflowcomplianceview({ clientNr, explorerId, productName, name, desig
               value={markdownContent}
               className="Markdowninput"
               disabled = {!designerMode}
-              style={{ height: "150px", overflowY: "auto", width: "800px" }}
+              style={{ height: "150px", overflowY: "auto", width: "700px" }}
               onChange={handleTextareaChange}
             />
               )}
@@ -150,16 +150,16 @@ function Workflowcomplianceview({ clientNr, explorerId, productName, name, desig
           <p>Loading Workflow information...</p>
         )}
       </div>
-      {designerMode && (<div>
+      <div>
+      {designerMode && (
         <button className='editorButton' onClick={toggleDisplayMode}>
           {isRichTextMode ? 'Use Markdown Editor' : 'Use Rich Text Editor'}
         </button>
-      </div>)}
-      {designerMode && (
-              <div>
+      )}
+      {designerMode && (      
                 <button className = "actionbutton" onClick={handleUpdate}>Update</button>   
-              </div>
             )}
+      </div>
     </div>
   );
 }

@@ -126,7 +126,7 @@ const handleTextareaChange = (e) => {
               <label htmlFor="workflowDescription">Compliance Description</label>
               <br />
               {isRichTextMode ? (
-                 <div style={{ height: "150px", overflowY: "auto", width: "780px", marginTop: "10px" , marginBottom: "14px", border: "1px solid white" }}>
+                 <div style={{ height: "150px", overflowY: "auto", width: "700px", marginTop: "10px" , marginBottom: "14px", border: "1px solid white" }}>
                 <ReactQuill
                   value={task.complianceDescription}
                   modules={{
@@ -151,7 +151,7 @@ const handleTextareaChange = (e) => {
               value={markdownContent}
               className="Markdowninput"
               disabled = {!designerMode}
-              style={{ height: "150px", overflowY: "auto", width: "800px" }}
+              style={{ height: "150px", overflowY: "auto", width: "700px" }}
               onChange={handleTextareaChange}
             />
               )}
@@ -161,16 +161,18 @@ const handleTextareaChange = (e) => {
           <p>Loading Task information...</p>
         )}
       </div>
-      {designerMode && (<div>
+      <div>
+      {designerMode && (
         <button className='editorButton' onClick={toggleDisplayMode}>
           {isRichTextMode ? 'Use Markdown Editor' : 'Use Rich Text Editor'}
         </button>
-      </div>)}
+      )}
       {designerMode && (
-              <div>
+          
                 <button className = 'editorButton' onClick={handleUpdate}>Update</button>
-              </div>
+            
             )}
+      </div>
     </div>
   );
 }

@@ -98,7 +98,6 @@ function Productcomplianceview({ clientNr, explorerId, productName, designerMode
   return (
     <div className="Productview">
       <div>
-        
         {product ? (
           <div>
             <div>
@@ -116,7 +115,7 @@ function Productcomplianceview({ clientNr, explorerId, productName, designerMode
               <label htmlFor="productDescription">Compliance Description</label>
               <br />
               {isRichTextMode ? (
-                 <div style={{ height: "150px", overflowY: "auto", width: "780px", marginTop: "10px" , marginBottom: "14px", border: "1px solid white" }}>
+                 <div style={{ height: "150px", overflowY: "auto", width: "700px", marginTop: "10px" , marginBottom: "14px", border: "1px solid white" }}>
                 <ReactQuill
                   value={product.complianceDescription}
                   modules={{
@@ -140,7 +139,7 @@ function Productcomplianceview({ clientNr, explorerId, productName, designerMode
               value={markdownContent}
               className="Markdowninput"
               disabled = {!designerMode}
-              style={{ height: "150px", overflowY: "auto", width: "800px" }}
+              style={{ height: "150px", overflowY: "auto", width: "700px" }}
               onChange={handleTextareaChange}
             />
               )}
@@ -150,16 +149,15 @@ function Productcomplianceview({ clientNr, explorerId, productName, designerMode
           <p>Loading product information...</p>
         )}
       </div>
-      <div>
+
+      <div classname = "viewButtons">
         <button className='editorButton' onClick={toggleDisplayMode}>
           {isRichTextMode ? 'Use Markdown Editor' : 'Use Rich Text Editor'}
         </button>
-      </div>
       {designerMode && (
-              <div>
                 <button className = "actionbutton" onClick={handleUpdate}>Update</button>
-              </div>
             )}
+      </div>
     </div>
   );
 }

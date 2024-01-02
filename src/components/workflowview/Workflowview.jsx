@@ -188,7 +188,7 @@ function Workflowview({ clientNr, explorerId, productName, name, designerMode, u
               <label htmlFor="workflowDescription">Description:</label>
               <br />
               {isRichTextMode ? (
-                 <div style={{ height: "150px", overflowY: "auto", width: "780px", marginTop: "10px" , marginBottom: "14px", border: "1px solid white" }}>
+                 <div style={{ height: "150px", overflowY: "auto", width: "700px", marginTop: "10px" , marginBottom: "14px", border: "1px solid white" }}>
                 <ReactQuill
                   value={workflow.description}
                   modules={{
@@ -212,7 +212,7 @@ function Workflowview({ clientNr, explorerId, productName, name, designerMode, u
               value={markdownContent}
               className="Markdowninput"
               disabled = {!designerMode}
-              style={{ height: "150px", overflowY: "auto", width: "800px" }}
+              style={{ height: "150px", overflowY: "auto", width: "700px" }}
               onChange={handleTextareaChange}
             />
               )}
@@ -222,17 +222,20 @@ function Workflowview({ clientNr, explorerId, productName, name, designerMode, u
           <p>Loading Workflow information...</p>
         )}
       </div>
-      {designerMode && (<div>
+      <div>
+      {designerMode && (
         <button className='editorButton' onClick={toggleDisplayMode}>
           {isRichTextMode ? 'Use Markdown Editor' : 'Use Rich Text Editor'}
         </button>
-      </div>)}
+      )}
       {designerMode && (
-              <div>
                 <button className = "actionbutton" onClick={handleUpdate}>Update</button>
+            )}
+      {designerMode && (          
                 <button className = "actionbutton" onClick={handleDelete}>Remove</button>
+            )}
+      {designerMode && (
                 <button className = "actionbutton" onClick={handleClone}>Clone</button>
-              </div>
             )}
       {isWorkflowCloneModalOpen && (
         <Modalworkflowclone
@@ -243,6 +246,7 @@ function Workflowview({ clientNr, explorerId, productName, name, designerMode, u
           }}
         />
       )}
+      </div>
     </div>
   );
 }

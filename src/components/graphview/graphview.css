@@ -4,9 +4,9 @@
     /* Set the flex direction to column */
     flex-direction: column;
     /* Set the height of the container to 100% of the viewport */
-    height: 100%;
+    
     width: 100%;
-    overflow-x:auto; /* Enable horizontal scrolling */
+    
     white-space: nowrap; /* Prevent graphs from wrapping to the next line */
     
   }
@@ -35,7 +35,7 @@
     font-size: large;
     cursor: pointer;
     margin:10px;
-    color:blue
+    color: #03A062
   }
 
   .actionButton
@@ -45,4 +45,6 @@
   .buttons
   {
     margin-left: 0px;
+    margin-top: 8px;
+    border: 1px solid #03A062;
   }

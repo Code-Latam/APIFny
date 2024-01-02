@@ -28,7 +28,7 @@ const Graphview = ({ selectedProduct, selectedWork,onTaskChange,onLinkChange,gra
       renderArrow: true,
       strokeWidth: 2,
     },
-    width: 500, // Set the width of the graph (adjust as needed)
+    width: 800, // Set the width of the graph (adjust as needed)
     height: 300, // Set the height of the graph (adjust as needed)
     "freezeAllDragEvents": !designerMode,
     "staticGraph": !designerMode,
@@ -340,6 +340,14 @@ const Graphview = ({ selectedProduct, selectedWork,onTaskChange,onLinkChange,gra
 
     return (
       <div className= "App">
+        {designerMode &&(
+        <div className="buttons">
+        <button className = "actionButton" onClick={() => handleAddNode()}>Add Task</button>
+        <button className = "actionButton" onClick={() => handleDeleteNode()}>Remove Task</button>
+        <button className = "actionButton" onClick={() => handleAddLink()}>Add Link</button>
+        <button className = "actionButton" onClick={() => handleDeleteLink()}>Remove Link</button>  
+        </div>
+        )}
         <div className="top-part">
           {data.map((graph, index) => (
             <div key={index}>
@@ -378,24 +386,7 @@ const Graphview = ({ selectedProduct, selectedWork,onTaskChange,onLinkChange,gra
             </div>
           ))}
         </div>
-        {designerMode &&(
-        <div className="buttons">
-        <button className = "actionButton" onClick={() => handleAddNode()}>Add Task</button>
-        <button className = "actionButton" onClick={() => handleDeleteNode()}>Remove Task</button>
-        <button className = "actionButton" onClick={() => handleAddLink()}>Add Link</button>
-        <button className = "actionButton" onClick={() => handleDeleteLink()}>Remove Link</button>  
-        </div>
-        )}
-
-        {showModal && (
-        <Modal
-          graph={selectedWorkflow}
-          onClose={() => {
-            setSelectedWorkflow(null);
-            setShowModal(false);
-          }}
-        />
-      )}
+        
         {showModallink && (
         <Modallink
           graph={selectedWorkflow}

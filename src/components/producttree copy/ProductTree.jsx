@@ -22,6 +22,8 @@ import { FiMoreVertical } from 'react-icons/fi'
 import {convertToOpenAPI} from "../../utils/utils.js";
 import jsYaml from 'js-yaml';
 import { saveAs } from 'file-saver';
+import { Resizable } from 'react-resizable';
+import 'react-resizable/css/styles.css';
 
 const clientNr = process.env.REACT_APP_CLIENTNR;
 const explorerId = process.env.REACT_APP_EXPLORERID;
@@ -422,7 +424,7 @@ const ProductTree = ({designerMode}) => {
 
           {renderTree(products, false)}
         </div>
-      <div className = "middle-panel">
+      <div className = "right-container">
         <div className="graph-view">
           <Graphview
             selectedProduct={selectedProduct}
@@ -433,7 +435,8 @@ const ProductTree = ({designerMode}) => {
             designerMode={designerMode}
           />
         </div>
-        <div className="lower-middle-panel">
+        <div className='lower-panel'>
+        <div className="lower-left-panel">
         <div className="icon-right-align">
           <FiMoreVertical className="context-menu-icon" onClick={handleContextMenuClick} />
         </div>
@@ -477,6 +480,8 @@ const ProductTree = ({designerMode}) => {
               position={contextMenuPosition}
             />
           )}
+
+
         {selectedItemType === 'product' ? 
         <Productview
         clientNr = {clientNr}
@@ -593,9 +598,7 @@ const ProductTree = ({designerMode}) => {
        /> 
          : null} 
         </div>
-        
-      </div>
-      <div classname= "right-panel">
+        <div classname= "lower-right-panel">
           <div className = "title-wrap">
           <div className= "title-bot"> AI Podium</div>
           </div>
@@ -603,6 +606,9 @@ const ProductTree = ({designerMode}) => {
            clientNr = {clientNr}
           />
         </div>
+      </div>
+      </div>
+      
       </div>
   );
   

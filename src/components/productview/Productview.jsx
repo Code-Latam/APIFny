@@ -176,7 +176,7 @@ function Productview({ clientNr, explorerId, productName, designerMode, updateTr
               <label htmlFor="productDescription">Description:</label>
               <br />
               {isRichTextMode ? (
-                 <div style={{ height: "150px", overflowY: "auto", width: "780px", marginTop: "10px" , marginBottom: "14px", border: "1px solid white" }}>
+                 <div style={{ height: "150px", overflowY: "auto", width: "700px", marginTop: "10px" , marginBottom: "14px", border: "1px solid white" }}>
                 <ReactQuill
                   value={product.description}
                   modules={{
@@ -200,7 +200,7 @@ function Productview({ clientNr, explorerId, productName, designerMode, updateTr
               value={markdownContent}
               className="Markdowninput"
               disabled = {!designerMode}
-              style={{ height: "150px", overflowY: "auto", width: "800px" }}
+              style={{ height: "150px", overflowY: "auto", width: "700px" }}
               onChange={handleTextareaChange}
             />
               )}
@@ -210,17 +210,17 @@ function Productview({ clientNr, explorerId, productName, designerMode, updateTr
           <p>Loading product information...</p>
         )}
       </div>
-      <div>
+      <div >
         <button className='editorButton' onClick={toggleDisplayMode}>
           {isRichTextMode ? 'Use Markdown Editor' : 'Use Rich Text Editor'}
         </button>
-      </div>
       {designerMode && (
-              <div>
-                <button className = "actionbutton" onClick={handleUpdate}>Update</button>
-                <button className = "actionbutton" onClick={handleDelete}>Remove</button>
-              </div>
+                <button className = "actionbutton" onClick={handleUpdate}>Update</button>        
             )}
+      {designerMode && (
+                <button className = "actionbutton" onClick={handleDelete}>Remove</button>
+            )}
+      </div>
     </div>
   );
 }
