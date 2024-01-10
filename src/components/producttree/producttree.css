@@ -17,10 +17,10 @@
 
   /* Set up a main container to hold the left and right panels */
   .main-container {
-    height: 100vh; /* Use the full viewport height */
-    width: 100%;
+    height: 100vh;
     display: flex;
     color:#03A062;
+    background: black;
   }
 
   input {
@@ -61,7 +61,7 @@
 .graph-view {
 
  width: 100%;
- flex: 3; 
+ height: 300px; 
 }
 
 /* Style the lower panel separately */
@@ -74,19 +74,25 @@
 }
 
 .lower-middle-panel {
-  border: 1px solid #03A062;
+  
+  border-left: 1px solid #03A062;
+  border-right: 1px solid #03A062;
+  border-bottom: 1px solid #03A062;
   width: 100%;
-  height: 100%;
-
+  height: 475px;
+  overflow:scroll;
+  
 }
 
 .right-panel {
   color: #03A062;
   width: 30%;
   border: 1px solid #03A062;
+  height: 100%;
 }
 
 .context-menu-icon {
+  
   color: white;
   background: #03A062;
   margin: 5px;
@@ -98,6 +104,9 @@
 .icon-right-align {
   display: flex;
   justify-content: flex-end;
+  background-color: black;
+  border-left: 1px solid #03A062;
+  border-right: 1px solid #03A062;
 }
 
 button {

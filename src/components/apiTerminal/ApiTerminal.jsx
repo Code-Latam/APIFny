@@ -2,8 +2,8 @@
 import React, { useState, useEffect } from "react"
 import './apiTerminal.css'; // Import your CSS file here
 import axios from "axios";
-import yaml from 'js-yaml';
 import crypto from 'crypto-js';
+import {HeadersGlobalAdd, requestBodyGlobalAdd, addAuthToHeaders, addAuthToRequestBody, parseApiHeaders, getConfiguration, isValidConfiguration} from "../../utils/api-spec-util.js";
 
 const ApiTerminal = ({ clientNr, explorerId, productName, workflowName, taskId,apiName }) => {
   const [gwoken, setGwoken] = useState('saasasasas');
@@ -65,125 +65,7 @@ const ApiTerminal = ({ clientNr, explorerId, productName, workflowName, taskId,a
     }
   };
   
-  const isStringValidYAML = (yamlString) => {
-    try {
-      // Try to parse the YAML string
-      yaml.load(yamlString);
-      // If parsing succeeds, return true
-      return true;
-    } catch (error) {
-      // If an error occurs during parsing, return false
-      return false;
-    }
-  };
-
-  function HeadersGlobalAdd(apiHeaders, yamlObject) {
-    const globalParameters = yamlObject['Global-Parameters-Header'];
   
-    if (!globalParameters || (globalParameters.enable ==='no') || !globalParameters.parameters || Object.keys(globalParameters.parameters).length === 0) {
-      // No parameters specified, return the original apiHeaders
-      return apiHeaders;
-    }
-  
-    if (globalParameters.overwrite && globalParameters.overwrite.toLowerCase() === 'yes') {
-      // Overwrite specified parameters in apiHeaders
-      for (const param in globalParameters.parameters) {
-        if (apiHeaders.hasOwnProperty(param)) {
-          apiHeaders[param] = globalParameters.parameters[param];
-        }
-      }
-    }
-  
-    // Add missing parameters to apiHeaders
-    for (const param in globalParameters.parameters) {
-      if (!apiHeaders.hasOwnProperty(param)) {
-        apiHeaders[param] = globalParameters.parameters[param];
-      }
-    }
-  
-    return apiHeaders;
-  }
-
-  function addAuthToHeaders(myheadersWithGlobals,yamlObject )
-  {
-    const authenticationType =  yamlObject['Authentication-Type'];
-
-    switch (authenticationType) {
-      case "No-Authentication":
-        return myheadersWithGlobals;
-      case "Digital-Signature":
-        return myheadersWithGlobals;
-      case "Basic-Authentication":
-        return myheadersWithGlobals;
-      case "ApiKey":
-        return myheadersWithGlobals;
-      default:
-        return myheadersWithGlobals;
-    }
-  }
-
-  function addAuthToRequestBody(myRequestBodyWithGlobals,yamlObject )
-  {
-    const authenticationType =  yamlObject['Authentication-Type'];
-
-    switch (authenticationType) {
-      case "No-Authentication":
-        return myRequestBodyWithGlobals;
-      case "Digital-Signature":
-        // get properties for the digital signature
-        const DigitalSignature = yamlObject['Digital-Signature'] ;
-        // parameters and result of the function
-        const token = DigitalSignature.token ;
-
-        const functionString = DigitalSignature.calculationFunction
-        const parameterName = DigitalSignature.parameterName
-        // remove the signature parameter from the body if it is present  
-        delete myRequestBodyWithGlobals[parameterName] ;
-        console.log("BODY BEFORE GOING INTO SIGNATURE");
-        console.log(myRequestBodyWithGlobals);
-
-        
-        let calculationFunction = new Function("token, parameters,crypto",functionString);
-        const mydigitalSignature = calculationFunction(token,myRequestBodyWithGlobals,crypto);
-        console.log("DIGITAL SIGNATURE");
-        console.log(mydigitalSignature);
-        myRequestBodyWithGlobals[parameterName] = mydigitalSignature ;
-        return myRequestBodyWithGlobals;
-      case "Basic-Authentication":
-        return myRequestBodyWithGlobals;
-      case "ApiKey":
-        return myRequestBodyWithGlobals;
-      default:
-        return myRequestBodyWithGlobals;
-    }
-  }
-
-  function requestBodyGlobalAdd (apiRequestBody, yamlObject) {
-    const globalParameters = yamlObject['Global-Parameters-RequestBody'];
-  
-    if (!globalParameters || (globalParameters.enable ==='no') || !globalParameters.parameters || Object.keys(globalParameters.parameters).length === 0) {
-      // No parameters specified, return the original apiHeaders
-      return apiRequestBody;
-    }
-  
-    if (globalParameters.overwrite && globalParameters.overwrite.toLowerCase() === 'yes') {
-      // Overwrite specified parameters in apiHeaders
-      for (const param in globalParameters.parameters) {
-        if (apiRequestBody.hasOwnProperty(param)) {
-          apiRequestBody[param] = globalParameters.parameters[param];
-        }
-      }
-    }
-  
-    // Add missing parameters to apiHeaders
-    for (const param in globalParameters.parameters) {
-      if (!apiRequestBody.hasOwnProperty(param)) {
-        apiRequestBody[param] = globalParameters.parameters[param];
-      }
-    }
-  
-    return apiRequestBody;
-  }
   
 
   const handleSubmit = async (e) => {
@@ -191,20 +73,14 @@ const ApiTerminal = ({ clientNr, explorerId, productName, workflowName, taskId,a
     setResponse(''); // Clear the response
 
     // get the YAML configuration of ApiFny for this explorer 
-    if (!isStringValidYAML(explorer.yaml ))
+    if (!isValidConfiguration(explorer ))
     {
       alert("The APIFny configuration file is not a valid yaml file.");
       return;
     }
-    const yamlObject = yaml.load(explorer.yaml); 
+    const yamlObject = getConfiguration(explorer)
     //build the headers as found in the API dynamically
-    const apiHeaders = api.headers.reduce((acc, header) => {
-      const [key, value] = header.split(':');
-      if (key && value) {
-        acc[key.trim()] = value.trim();
-      }
-      return acc;
-    }, {});
+    const apiHeaders = parseApiHeaders(api);
     // add or replace the global parameters (found in the config) to the headers
     const myheadersWithGlobals = HeadersGlobalAdd(apiHeaders,yamlObject )
     // add or replace the global parameters (found in the config) to the request body

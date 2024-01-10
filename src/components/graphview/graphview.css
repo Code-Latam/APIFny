@@ -13,7 +13,7 @@
   
   .top-part {
     /* Set the flex-basis of the top part to 30% */
-    height:300px;
+   
     display: flex;
     flex-direction:row;
     align-items:normal; 

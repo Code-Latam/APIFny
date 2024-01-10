@@ -361,7 +361,6 @@ const ProductTree = ({designerMode}) => {
       // on first fetch set the productname
       setSelectedProduct(json[0].name)
       setSelectedItemType('product');
-     
     } catch (error) {
       // Handle any errors
       console.error(error);
@@ -434,7 +433,6 @@ const ProductTree = ({designerMode}) => {
         </div>
         <div className = "middle-panel">
         <div className="graph-view">
-        {(selectedProduct || selectedWork) && (
           <Graphview
             selectedProduct={selectedProduct}
             selectedWork={selectedWork}
@@ -443,13 +441,11 @@ const ProductTree = ({designerMode}) => {
             graphChange = {newGraphItem}
             designerMode={designerMode}
           />
-        )}
         </div>
+        <div className="lower-middle-panel">
         <div className="icon-right-align">
           <FiMoreVertical className="context-menu-icon" onClick={handleContextMenuClick} />
         </div>
-        <div className="lower-middle-panel">
-        
 
         {isWorkflowModalOpen && (
         <Modalworkflow

@@ -10,10 +10,19 @@ import Modallink from "../modallink/Modallink";
 const Graphview = ({ selectedProduct, selectedWork,onTaskChange,onLinkChange,graphChange, designerMode }) => {
   console.log("SUPERDESIGNERMODE");
   console.log(designerMode);
+
+  const d3Config = {
+    gravity: 0,
+    linkLength: 100,
+    linkStrength: 0,
+    disableLinkForce: true
+  };
+
   const config = {
    
     nodeHighlightBehavior: true,
     directed: true,
+    d3: d3Config,
     node: 
     {
       
@@ -28,8 +37,8 @@ const Graphview = ({ selectedProduct, selectedWork,onTaskChange,onLinkChange,gra
       renderArrow: true,
       strokeWidth: 2,
     },
-    width: 800, // Set the width of the graph (adjust as needed)
-    height: 300, // Set the height of the graph (adjust as needed)
+    width: 700, // Set the width of the graph (adjust as needed)
+    height: 200, // Set the height of the graph (adjust as needed)
     "freezeAllDragEvents": !designerMode,
     "staticGraph": !designerMode,
   };
@@ -55,6 +64,7 @@ const Graphview = ({ selectedProduct, selectedWork,onTaskChange,onLinkChange,gra
       console.log("graph");
       console.log(graph);
       onTaskChange("workflow",selectedProduct, graph.name,null,null);
+    
     };
 
     const getRandomNumber = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
@@ -312,6 +322,8 @@ const Graphview = ({ selectedProduct, selectedWork,onTaskChange,onLinkChange,gra
     
         if (!selectedProduct) {
           endpoint = "/workflow/queryallgraphs";
+          setData([]);
+          return
         } else if (selectedProduct && !selectedWork) {
           endpoint = "/workflow/queryallgraphsgivenproduct";
         }
@@ -375,6 +387,7 @@ const Graphview = ({ selectedProduct, selectedWork,onTaskChange,onLinkChange,gra
                 })),
               }}
               config={config}
+              d3 = {d3Config}
               onClickGraph={() => onClickGraph(graph)}
               onClickNode={(nodeId,node) => onClickNode(nodeId,node, graph.name,graph)}
               onClickLink = {(source,target) => handleClickLink(source,target,graph)}

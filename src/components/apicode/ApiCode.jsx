@@ -101,10 +101,6 @@ const ApiCode = ({ clientNr, explorerId, productName, workflowName, taskId,apiNa
   
   return (
     <div>
-      <ToastContainer /> // place the ToastContainer component
-      <CopyToClipboard text={generatedCode} onCopy={handleCopy}>
-        <button className="copy-button"><FaCopy /></button>
-      </CopyToClipboard>
       <SyntaxHighlighter language="javascript" style={darkStyle}>
         {generatedCode}
       </SyntaxHighlighter>

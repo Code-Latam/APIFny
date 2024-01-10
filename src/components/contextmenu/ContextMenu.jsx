@@ -37,7 +37,7 @@ import {
   
     return (
       <div className="context-menu" style={{ top: position.y, left: position.x }}>
-        {(isCodeItem || selectedItemType === "workflow" || selectedItemType === "workflowcompliance") && (
+        {(isCodeItem || selectedItemType === "workflow" || selectedItemType === "workflowcompliance" || selectedItemType === "workflowterminal") && (
           <>
             {isCodeItem  && selectedItemType !== "workflowcode" && (
               <>
@@ -47,6 +47,16 @@ import {
                 </div>
               </>
             )}
+            {(selectedItemType === "workflow" || selectedItemType === "workflowcompliance" || selectedItemType === "workflowterminal" || selectedItemType === "workflowcode") && (
+              <>
+            <div className="menu-separator"></div>
+            <div className="menu-item" onClick={() => handleMenuItemClick("workflowterminal")}>
+              <Code className="menu-icon" />
+              <span className="menu-text">Run workflow..</span>
+            </div> 
+            </> 
+            )}
+
             <div className="menu-separator"></div>
             <div className="menu-item" onClick={() => handleMenuItemClick("javascript")}>
               <Code className="menu-icon" />

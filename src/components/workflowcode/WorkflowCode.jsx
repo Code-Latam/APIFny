@@ -100,11 +100,7 @@ const WorkflowCode = ({ clientNr, explorerId, productName, workflowName, codeTyp
 
   
   return (
-    <div>
-      <ToastContainer /> // place the ToastContainer component
-      <CopyToClipboard text={generatedCode} onCopy={handleCopy}>
-        <button className="copy-button"><FaCopy /></button>
-      </CopyToClipboard>
+    <div className = "code-display">
       <SyntaxHighlighter language="javascript" style={darkStyle}>
         {generatedCode}
       </SyntaxHighlighter>

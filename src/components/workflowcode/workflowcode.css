@@ -7,7 +7,8 @@
 
   .code-display
   {
-    margin-left : 10px
+    padding : 10px;
+    background: black;
   }
   .copied
   {

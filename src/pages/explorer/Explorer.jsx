@@ -7,7 +7,7 @@ export default function Explorer({designerMode}) {
   console.log(designerMode);
   return (
     <>
-      <div className="WorkflowtreePanel">
+      <div className="explorerContainer">
         <ProductTree 
         designerMode={designerMode}
         />
