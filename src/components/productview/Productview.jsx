@@ -203,7 +203,8 @@ function Productview({ clientNr, explorerId, productName, designerMode, updateTr
                   className="Productviewinput"
                   onChange={handleDescriptionChange}
                   disabled = {!designerMode} 
-                  readOnly =  {!designerMode}        
+                  readOnly =  {!designerMode}   
+                  style={{ minHeight: '550px' }}      
                 />
                 </div>
               ) : (

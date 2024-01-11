@@ -139,7 +139,8 @@ function Productcomplianceview({ clientNr, explorerId, productName, designerMode
                   className="ProductComplienceviewinput"
                   onChange={handleComplianceDescriptionChange}
                   disabled = {!designerMode} 
-                  readOnly =  {!designerMode}        
+                  readOnly =  {!designerMode}    
+                  style={{ minHeight: '550px' }}     
                 />
                 </div>
               ) : (

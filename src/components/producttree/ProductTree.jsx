@@ -400,7 +400,7 @@ const ProductTree = ({designerMode}) => {
   const handleContextMenuClick = (e) => {
     e.preventDefault();
     // Calculate the position of the context menu based on the click event
-    setContextMenuPosition({ x: (e.clientX - 200), y: e.clientY });
+    setContextMenuPosition({ x: (e.clientX - 550), y: e.clientY - 275});
     setContextMenuVisible(true);
   };
 

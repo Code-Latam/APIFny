@@ -222,6 +222,7 @@ const handleTextareaChange = (e) => {
                   onChange={handleDescriptionChange}
                   readOnly =  {!designerMode}  
                   disabled = {!designerMode}
+                  style={{ minHeight: '550px' }} 
                   
                 />
                 </div>

@@ -142,7 +142,8 @@ function Workflowcomplianceview({ clientNr, explorerId, productName, name, desig
                   className="Taskviewinput"
                   onChange={handleComplianceDescriptionChange}
                   disabled = {!designerMode} 
-                  readOnly =  {!designerMode}                   
+                  readOnly =  {!designerMode}     
+                  style={{ minHeight: '550px' }}               
                 />
                 </div>
               ) : (

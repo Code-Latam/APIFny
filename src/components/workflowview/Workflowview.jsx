@@ -229,7 +229,8 @@ function Workflowview({ clientNr, explorerId, productName, name, designerMode, u
                   className="Taskviewinput"
                   onChange={handleDescriptionChange}
                   disabled = {!designerMode} 
-                  readOnly =  {!designerMode}                   
+                  readOnly =  {!designerMode}  
+                  style={{ minHeight: '550px' }}                  
                 />
                 </div>
               ) : (
