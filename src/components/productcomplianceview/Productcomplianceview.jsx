@@ -100,6 +100,14 @@ function Productcomplianceview({ clientNr, explorerId, productName, designerMode
       <div>
         {product ? (
           <div>
+            <div classname = "viewButtons">
+        <button className='editorButton' onClick={toggleDisplayMode}>
+          {isRichTextMode ? 'Use Markdown Editor' : 'Use Rich Text Editor'}
+        </button>
+      {designerMode && (
+                <button className = "actionbutton" onClick={handleUpdate}>Update</button>
+            )}
+      </div>
             <div>
               <label htmlFor="productName">Product Name</label>
               <br />
@@ -115,7 +123,7 @@ function Productcomplianceview({ clientNr, explorerId, productName, designerMode
               <label htmlFor="productDescription">Compliance Description</label>
               <br />
               {isRichTextMode ? (
-                 <div style={{ height: "150px", overflowY: "auto", width: "700px", marginTop: "10px" , marginBottom: "14px", border: "1px solid white" }}>
+                 <div style={{ overflowY: "auto", marginTop: "10px" , marginBottom: "14px", border: "1px solid white" }}>
                 <ReactQuill
                   value={product.complianceDescription}
                   modules={{
@@ -139,7 +147,6 @@ function Productcomplianceview({ clientNr, explorerId, productName, designerMode
               value={markdownContent}
               className="Markdowninput"
               disabled = {!designerMode}
-              style={{ height: "150px", overflowY: "auto", width: "700px" }}
               onChange={handleTextareaChange}
             />
               )}
@@ -150,14 +157,7 @@ function Productcomplianceview({ clientNr, explorerId, productName, designerMode
         )}
       </div>
 
-      <div classname = "viewButtons">
-        <button className='editorButton' onClick={toggleDisplayMode}>
-          {isRichTextMode ? 'Use Markdown Editor' : 'Use Rich Text Editor'}
-        </button>
-      {designerMode && (
-                <button className = "actionbutton" onClick={handleUpdate}>Update</button>
-            )}
-      </div>
+      
     </div>
   );
 }

@@ -445,11 +445,11 @@ const ProductTree = ({designerMode}) => {
           />
         )}
         </div>
+        
+        <div className="lower-middle-panel">
         <div className="icon-right-align">
           <FiMoreVertical className="context-menu-icon" onClick={handleContextMenuClick} />
         </div>
-        <div className="lower-middle-panel">
-        
 
         {isWorkflowModalOpen && (
         <Modalworkflow

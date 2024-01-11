@@ -29,7 +29,8 @@
     background-color: black;
     color: #03A062;
     border: 1px solid #ccc;
-    
+    width: 100%;
+    height: 100px;
   }
   .editorButton {
     margin-bottom: 5px;

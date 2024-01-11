@@ -145,6 +145,17 @@ const handleTextareaChange = (e) => {
         {task ? (
           <div>
             <div>
+            {designerMode && (
+            <button className='editorButton' onClick={toggleDisplayMode}>
+              {isRichTextMode ? 'Use Markdown Editor' : 'Use Rich Text Editor'}
+            </button>
+          )}
+      {   designerMode && (
+                <button className = 'editorButton' onClick={handleUpdate}>Update</button>
+            
+            )}
+      </div>     
+            <div>
               <label htmlFor="workflowName">Task Name</label>
               <br />
               <input
@@ -194,7 +205,7 @@ const handleTextareaChange = (e) => {
               <label htmlFor="workflowDescription">Description</label>
               <br />
               {isRichTextMode ? (
-                 <div style={{ height: "150px", overflowY: "auto", width: "700px", marginTop: "10px" , marginBottom: "14px", border: "1px solid white" }}>
+                 <div style={{ overflowY: "auto", marginTop: "10px" , marginBottom: "14px", border: "1px solid white" }}>
                 <ReactQuill
                   value={task.description}
                   modules={{
@@ -219,7 +230,6 @@ const handleTextareaChange = (e) => {
               value={markdownContent}
               className="Markdowninput"
               disabled = {!designerMode}
-              style={{ height: "150px", overflowY: "auto", width: "700px" }}
               onChange={handleTextareaChange}
             />
               )}
@@ -229,18 +239,7 @@ const handleTextareaChange = (e) => {
           <p>Loading Task information...</p>
         )}
       </div>
-      <div>
-      {designerMode && (
-        <button className='editorButton' onClick={toggleDisplayMode}>
-          {isRichTextMode ? 'Use Markdown Editor' : 'Use Rich Text Editor'}
-        </button>
-      )}
-      {designerMode && (
-              
-                <button className = 'editorButton' onClick={handleUpdate}>Update</button>
-            
-            )}
-      </div>      
+       
     </div>
   );
 }
