@@ -4,7 +4,6 @@ import './apiTerminal.css'; // Import your CSS file here
 import axios from "axios";
 import crypto from 'crypto-js';
 import {HeadersGlobalAdd, requestBodyGlobalAdd, addAuthToHeaders, addAuthToRequestBody, parseApiHeaders, getConfiguration, isValidConfiguration} from "../../utils/api-spec-util.js";
-import { ReactTerminal } from "react-terminal";
 
 const ApiTerminal = ({ clientNr, explorerId, productName, workflowName, taskId,apiName }) => {
   const [gwoken, setGwoken] = useState('saasasasas');
@@ -14,29 +13,6 @@ const ApiTerminal = ({ clientNr, explorerId, productName, workflowName, taskId,a
   const [api, setApi] = useState([]);
   const [explorer, setExplorer] = useState([]);
   const [requestBodyFields, setRequestBodyFields] = useState({});
-
-  const commands = {
-    whoami: () => {
-      console.log("HELLO");
-      return "jackharper"
-    },
-    cd: (directory) => {
-      const myreturn = `changed path to ${directory}`;
-      return myreturn;
-    },
-    run: async () => {
-      try {
-        // Execute the handleSubmit logic when "run" is entered in the terminal
-        const myResponse = await handleSubmit();
-        console.log("API call executed successfully.");
-        console.log(response);
-        return myResponse;
-      } catch (error) {
-        console.error('Error during API execution:', error);
-        return <div style={{ color: '#006400' }}> {'An error occurred during API execution'}</div>;
-      }
-    },
-  };
 
   console.log("in api terminal");
   console.log(clientNr);
@@ -93,8 +69,7 @@ const ApiTerminal = ({ clientNr, explorerId, productName, workflowName, taskId,a
   
 
   const handleSubmit = async (e) => {
-    try {
-    // e.preventDefault();
+    e.preventDefault();
     setResponse(''); // Clear the response
 
     // get the YAML configuration of ApiFny for this explorer 
@@ -125,24 +100,21 @@ const ApiTerminal = ({ clientNr, explorerId, productName, workflowName, taskId,a
     console.log(finalRequestBody);
 
 
-    const fetchResponse = await fetch(process.env.REACT_APP_CENTRAL_BACK + "/relay", {
+    fetch(process.env.REACT_APP_CENTRAL_BACK + "/relay", {
       method: api.method,
       headers: {
         ...finalHeaders,
       },
       body: JSON.stringify(finalRequestBody),
     })
-      
-    const responseData = await fetchResponse.json();
-    setResponse(JSON.stringify(responseData, null, 2));
-    
-    return JSON.stringify(responseData, null, 2); // Return the response data
-  } catch (error) {
-    console.error('Error during API execution:', error);
-    setResponse(JSON.stringify(error, null, 2));
-    throw error; // Throw the error to be caught in the catch block outside the fetch
-  }
-};
+      .then((response) => response.json())
+      .then((response) => {
+        setResponse(JSON.stringify(response, null, 2));
+      })
+      .catch((error) => {
+        setResponse(JSON.stringify(error, null, 2));
+      });
+  };
 
   return (
     <div className="container">
@@ -177,32 +149,19 @@ const ApiTerminal = ({ clientNr, explorerId, productName, workflowName, taskId,a
               
               <div>11 } </div>
             </div>
+            <p></p>
+            <br></br>
+            <input type="submit" value="EXECUTE CODE" />
           </form>
         </div>
-      <div className="terminal">
-      <ReactTerminal 
-      style={{ overflow: 'hidden', height:"100px" }}
-      commands={commands} 
-      showControlBar = {false}
-      themes={{
-        "my-custom-theme": {
-          themeBGColor: "black",
-          themeToolbarColor: "#DBDBDB",
-          themeColor: "#03A062",
-          themePromptColor: "#03A062"
-        }
-      }}
-      theme="my-custom-theme"
-      prompt = '>>'
-      welcomeMessage ={
-        <div>
-          Welcome to the ApiFny API execution terminal.
-          <br />
-          Please type in "run" to submit the Curl.
-          <br />
-        </div>
-      }
-      />
+        <div className="panel-d">
+          <h2>TERMINAL</h2>
+          <div id="terminal-prompt"></div>
+          <pre id="response" className="typing-effect">
+            <code>
+          {response}
+          </code>
+          </pre>
         </div>
       </div>
     </div>

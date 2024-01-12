@@ -122,7 +122,6 @@ const Workflowterminal = ({ clientNr, explorerId, productName, name, designerMod
   return (
     <div className = "workflow-terminal" >
       <ReactTerminal 
-      className = "index_editor__JoDSg"
       commands={commands} 
       showControlBar = {false}
       themes={{

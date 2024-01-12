@@ -88,7 +88,7 @@
   flex:7;
   width: 100%;
   /*height: 475px; */
-  overflow: scroll;
+  overflow: Auto;
  
   z-index: 1;
   height: 100%;
@@ -123,7 +123,7 @@
 .icon-right-align {
   position: absolute;
   top: 0;
-  right: 0;
+  right: 20px;
   z-index: 2; 
   /* Add other styling for the icon */
 }

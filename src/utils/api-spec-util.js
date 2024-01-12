@@ -62,13 +62,20 @@ export function addAuthToHeaders(myheadersWithGlobals,yamlObject )
 
         const functionString = DigitalSignature.calculationFunction
         const parameterName = DigitalSignature.parameterName
-        // remove the signature parameter from the body if it is present  
+        // remove the destination and signature parameter from the body if it is present 
+        console.log("PARAMETER NAME");
+        console.log(parameterName); 
+        console.log("BODY BEFORE DELETE OF SIGNATURE");
+        console.log(myRequestBodyWithGlobals);
+
+        delete myRequestBodyWithGlobals["destination"] ;
         delete myRequestBodyWithGlobals[parameterName] ;
-        console.log("BODY BEFORE GOING INTO SIGNATURE");
+        
+        console.log("BODY AFTER DELETE OF SIGNATURE");
         console.log(myRequestBodyWithGlobals);
 
         
-        let calculationFunction = new Function("token, parameters,crypto",functionString);
+        const calculationFunction = new Function("token, parameters,crypto",functionString);
         const mydigitalSignature = calculationFunction(token,myRequestBodyWithGlobals,crypto);
         console.log("DIGITAL SIGNATURE");
         console.log(mydigitalSignature);

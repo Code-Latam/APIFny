@@ -585,6 +585,7 @@ const ProductTree = ({designerMode}) => {
        /> 
          : null} 
         {selectedItemType === 'api'  ?
+        <TerminalContextProvider>
          <ApiTerminal
          clientNr = {clientNr}
          explorerId = {explorerId}
@@ -593,6 +594,7 @@ const ProductTree = ({designerMode}) => {
          apiName = {selectedApi}
          taskId = {selectedTaskId}
        /> 
+       </TerminalContextProvider>
          : null} 
 
         {(selectedItemType ==='apicode' ) ?
