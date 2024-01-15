@@ -54,8 +54,11 @@ const ApiTerminal = ({ clientNr, explorerId, productName, workflowName, taskId,a
       setExplorer(myExplorer);
 
       if (myApi.requestBody) {
+        const yamlObject = getConfiguration(explorer);
         const initialRequestBodyFields = { ...myApi.requestBody };
-        setRequestBodyFields(initialRequestBodyFields);
+        const myRequestBodyWithGlobals = requestBodyGlobalAdd( initialRequestBodyFields,yamlObject);
+        console.log()
+        setRequestBodyFields(myRequestBodyWithGlobals);
       }
 
 

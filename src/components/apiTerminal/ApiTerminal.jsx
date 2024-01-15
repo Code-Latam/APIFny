@@ -50,7 +50,7 @@ const ApiTerminal = ({ clientNr, explorerId, productName, workflowName, taskId,a
     }));
   };
 
-  useEffect(() => {
+  useEffect( () => {
     // Fetch the initial products using an API call
     // Replace this with your actual API endpoint
     fetchApi();
@@ -65,7 +65,7 @@ const ApiTerminal = ({ clientNr, explorerId, productName, workflowName, taskId,a
         name: apiName
       }
       const response = await axios.post(process.env.REACT_APP_CENTRAL_BACK + "/api/query", myApibody);
-      const myApi = response.data;
+      const myApi = await response.data;
       setApi(myApi);
 
       const myExplorerbody = 
@@ -74,12 +74,18 @@ const ApiTerminal = ({ clientNr, explorerId, productName, workflowName, taskId,a
         explorerId: explorerId
       }
       const Eresponse = await axios.post(process.env.REACT_APP_CENTRAL_BACK + "/explorer/query", myExplorerbody);
-      const myExplorer = Eresponse.data;
+      const myExplorer = await Eresponse.data;
       setExplorer(myExplorer);
 
       if (myApi.requestBody) {
+        const yamlObject = getConfiguration(myExplorer);
+        console.log("YAML");
+        console.log(yamlObject);
         const initialRequestBodyFields = { ...myApi.requestBody };
-        setRequestBodyFields(initialRequestBodyFields);
+        const myRequestBodyWithGlobals = requestBodyGlobalAdd( initialRequestBodyFields,yamlObject);
+        console.log("HAPPY");
+        console.log(initialRequestBodyFields);
+        setRequestBodyFields(myRequestBodyWithGlobals);
       }
 
 
@@ -109,10 +115,10 @@ const ApiTerminal = ({ clientNr, explorerId, productName, workflowName, taskId,a
     // add or replace the global parameters (found in the config) to the headers
     const myheadersWithGlobals = HeadersGlobalAdd(apiHeaders,yamlObject )
     // add or replace the global parameters (found in the config) to the request body
-    const myRequestBodyWithGlobals = requestBodyGlobalAdd( requestBodyFields,yamlObject)
+    // const myRequestBodyWithGlobals = requestBodyGlobalAdd( requestBodyFields,yamlObject)
     
     const finalHeaders = addAuthToHeaders(myheadersWithGlobals,yamlObject );
-    const finalRequestBody = addAuthToRequestBody(myRequestBodyWithGlobals,yamlObject,crypto);
+    const finalRequestBody = addAuthToRequestBody(requestBodyFields,yamlObject,crypto);
     // we are using the relay function of our backen to get to the clients API so:
 
     finalRequestBody.destination = api.urlRoute ;

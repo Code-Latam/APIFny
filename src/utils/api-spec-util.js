@@ -90,6 +90,11 @@ export function addAuthToHeaders(myheadersWithGlobals,yamlObject )
     }
   }
 
+  function isFunctionParam(inputString) {
+    // Check if the inputString contains the word "function"
+    return inputString.includes("{");
+}
+
   export function requestBodyGlobalAdd (apiRequestBody, yamlObject) {
     const globalParameters = yamlObject['Global-Parameters-RequestBody'];
   
@@ -99,15 +104,35 @@ export function addAuthToHeaders(myheadersWithGlobals,yamlObject )
     }
   
     if (globalParameters.overwrite && globalParameters.overwrite.toLowerCase() === 'yes') {
-      // Overwrite specified parameters in apiHeaders
+      // Overwrite specified parameters in api Request Body
       for (const param in globalParameters.parameters) {
         if (apiRequestBody.hasOwnProperty(param)) {
-          apiRequestBody[param] = globalParameters.parameters[param];
+          // first check if it is a function or regular value parameter
+          const paramValue = globalParameters.parameters[param];
+
+          if (isFunctionParam(String(paramValue)))
+          {
+              // it is a function. Calll the function to return the value
+              console.log ("function found")
+              console.log(String(paramValue));
+              const functionString = String(paramValue);
+              const calculationFunction = new Function(functionString);
+              const myparamvalue = calculationFunction();
+              console.log("FUNCTION VALUE");
+              console.log(myparamvalue);
+              apiRequestBody[param] = myparamvalue;
+          }
+          else
+          {
+            //not a function. use value
+            apiRequestBody[param] = globalParameters.parameters[param];
+          }
+            
         }
       }
     }
   
-    // Add missing parameters to apiHeaders
+    // Add missing parameters to body
     for (const param in globalParameters.parameters) {
       if (!apiRequestBody.hasOwnProperty(param)) {
         apiRequestBody[param] = globalParameters.parameters[param];
